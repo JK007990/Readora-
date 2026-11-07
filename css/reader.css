@@ -1,0 +1,924 @@
+/* =====================================================
+   READORA - ONLINE BOOK READER
+   Orange + White Modern Responsive Design
+===================================================== */
+
+/* ==================== ROOT ==================== */
+
+:root {
+    --primary: #f47721;
+    --primary-dark: #df5f0d;
+    --primary-light: #fff0e6;
+
+    --background: #fffaf6;
+    --surface: #ffffff;
+    --surface-secondary: #fff7f1;
+
+    --text: #292524;
+    --text-secondary: #78716c;
+    --border: #eee5de;
+
+    --reader-paper: #ffffff;
+    --reader-text: #3f3832;
+
+    --shadow: 0 8px 30px rgba(60, 35, 15, 0.06);
+
+    --radius: 16px;
+    --transition: all 0.25s ease;
+}
+
+
+/* ==================== RESET ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+
+button,
+a {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(244, 119, 33, 0.4);
+    outline-offset: 4px;
+}
+
+
+/* ==================== HEADER ==================== */
+
+.reader-header {
+    width: 100%;
+    min-height: 76px;
+    padding: 15px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.reader-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--text);
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    color: #ffffff;
+    background: var(--primary);
+    border-radius: 12px;
+
+    font-size: 20px;
+}
+
+.reader-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+
+/* ==================== ICON BUTTON ==================== */
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    transition: var(--transition);
+}
+
+.icon-button:hover:not(:disabled) {
+    color: var(--primary);
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+
+/* ==================== MAIN ==================== */
+
+.reader-main {
+    width: 100%;
+    max-width: 1100px;
+    padding: 45px 24px 60px;
+    margin: 0 auto;
+    flex: 1;
+}
+
+
+/* ==================== BOOK INFORMATION ==================== */
+
+.reader-book-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    padding: 28px;
+    margin-bottom: 28px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.book-cover-wrapper {
+    width: 145px;
+    min-width: 145px;
+    aspect-ratio: 3 / 4;
+
+    overflow: hidden;
+    background: var(--primary-light);
+    border-radius: 10px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.book-cover-wrapper img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.book-info-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.free-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 6px 11px;
+    margin-bottom: 12px;
+
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    border-radius: 30px;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.book-info-text h1 {
+    margin-bottom: 5px;
+
+    color: var(--text);
+    font-size: clamp(25px, 4vw, 36px);
+    line-height: 1.25;
+    letter-spacing: -0.8px;
+    overflow-wrap: anywhere;
+}
+
+.reader-author {
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.reader-author span {
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.reader-description {
+    max-width: 650px;
+    margin-bottom: 18px;
+
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.reading-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.reading-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.reading-meta i {
+    color: var(--primary);
+}
+
+
+/* ==================== TOOLBAR ==================== */
+
+.reader-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    padding: 14px 18px;
+    margin-bottom: 22px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#font-size-label {
+    min-width: 45px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    text-align: center;
+}
+
+.toolbar-button {
+    min-height: 40px;
+    padding: 9px 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: var(--transition);
+}
+
+.toolbar-button:hover:not(:disabled) {
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.toolbar-button:disabled {
+    opacity: 0.4;
+}
+
+
+/* ==================== READING PROGRESS ==================== */
+
+.reading-progress-section {
+    margin-bottom: 22px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 9px;
+
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#progress-percentage {
+    color: var(--primary-dark);
+    font-weight: 800;
+}
+
+.progress-track {
+    width: 100%;
+    height: 6px;
+
+    overflow: hidden;
+    background: #f0e7df;
+    border-radius: 20px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        var(--primary),
+        #ffab65
+    );
+
+    border-radius: inherit;
+    transition: width 0.2s ease;
+}
+
+
+/* ==================== READING PAPER ==================== */
+
+.reading-paper {
+    padding: 55px clamp(22px, 7vw, 90px) 45px;
+
+    background: var(--reader-paper);
+    color: var(--reader-text);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.chapter-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.chapter-label {
+    display: inline-block;
+    margin-bottom: 12px;
+
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.chapter-heading h2 {
+    color: var(--text);
+    font-size: clamp(25px, 4vw, 34px);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.chapter-divider {
+    width: 55px;
+    height: 4px;
+
+    margin: 20px auto 0;
+
+    background: var(--primary);
+    border-radius: 5px;
+}
+
+.reader-content {
+    font-size: 18px;
+    line-height: 2;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.reader-content p {
+    margin-bottom: 25px;
+}
+
+.reader-content h2,
+.reader-content h3,
+.reader-content h4 {
+    margin: 35px 0 18px;
+
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.reader-content h2 {
+    font-size: 27px;
+}
+
+.reader-content h3 {
+    font-size: 23px;
+}
+
+.reader-content h4 {
+    font-size: 19px;
+}
+
+.reader-content ul,
+.reader-content ol {
+    padding-left: 28px;
+    margin-bottom: 25px;
+}
+
+.reader-content li {
+    margin-bottom: 10px;
+}
+
+.reader-content blockquote {
+    margin: 30px 0;
+    padding: 18px 22px;
+
+    color: var(--text-secondary);
+    background: var(--surface-secondary);
+    border-left: 4px solid var(--primary);
+    border-radius: 0 10px 10px 0;
+}
+
+.reader-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+
+    margin: 25px auto;
+    border-radius: 10px;
+}
+
+.reader-content a {
+    color: var(--primary-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+
+/* ==================== EMPTY CONTENT NOTICE ==================== */
+
+.reader-notice {
+    padding: 20px;
+    margin: 25px 0;
+
+    color: #8a4b16;
+    background: #fff4e5;
+    border: 1px solid #ffdfb8;
+    border-radius: 10px;
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.reader-notice[hidden] {
+    display: none;
+}
+
+
+/* ==================== END OF CHAPTER ==================== */
+
+.end-of-chapter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding-top: 35px;
+    margin-top: 45px;
+
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+
+    font-size: 13px;
+}
+
+.end-of-chapter i {
+    color: var(--primary);
+}
+
+
+/* ==================== BOTTOM CONTROLS ==================== */
+
+.reader-bottom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-top: 28px;
+}
+
+.browse-more-button,
+.primary-reader-button {
+    min-height: 44px;
+    padding: 11px 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: var(--transition);
+}
+
+.browse-more-button {
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    border: 1px solid #ffdbc3;
+}
+
+.browse-more-button:hover {
+    background: #ffe4d2;
+}
+
+.primary-reader-button {
+    color: #ffffff;
+    background: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.primary-reader-button:hover:not(:disabled) {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.primary-reader-button:disabled {
+    opacity: 0.4;
+}
+
+
+/* ==================== FOOTER ==================== */
+
+.reader-footer {
+    padding: 28px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    color: var(--text-secondary);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+
+    font-size: 12px;
+    text-align: center;
+}
+
+.reader-footer a {
+    color: var(--primary);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.reader-footer p {
+    margin-bottom: 5px;
+}
+
+
+/* ==================== DARK READING THEME ==================== */
+
+body.dark-reading {
+    --background: #171717;
+    --surface: #222222;
+    --surface-secondary: #2c2926;
+
+    --text: #f5f5f5;
+    --text-secondary: #b3ada7;
+    --border: #393532;
+
+    --reader-paper: #242424;
+    --reader-text: #e7e0d8;
+
+    --primary-light: #3b291d;
+    --primary-dark: #ffab70;
+
+    background: var(--background);
+    color: var(--text);
+}
+
+body.dark-reading .reader-content h2,
+body.dark-reading .reader-content h3,
+body.dark-reading .reader-content h4,
+body.dark-reading .chapter-heading h2 {
+    color: #f5f5f5;
+}
+
+body.dark-reading .free-badge {
+    color: #ffb783;
+}
+
+body.dark-reading .progress-track {
+    background: #44403c;
+}
+
+body.dark-reading .reader-notice {
+    color: #ffdbb8;
+    background: #3a2b20;
+    border-color: #65462d;
+}
+
+body.dark-reading .browse-more-button {
+    color: #ffb783;
+    background: #3b291d;
+    border-color: #65462d;
+}
+
+body.dark-reading .browse-more-button:hover {
+    background: #493323;
+}
+
+body.dark-reading .reader-content blockquote {
+    background: #302b27;
+}
+
+
+/* ==================== RESPONSIVE: TABLET ==================== */
+
+@media (max-width: 768px) {
+
+    .reader-header {
+        min-height: 68px;
+        padding: 12px 5%;
+    }
+
+    .reader-logo {
+        font-size: 22px;
+    }
+
+    .logo-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+
+    .reader-main {
+        padding: 28px 18px 40px;
+    }
+
+    .reader-book-info {
+        align-items: flex-start;
+        gap: 20px;
+        padding: 22px;
+    }
+
+    .book-cover-wrapper {
+        width: 115px;
+        min-width: 115px;
+    }
+
+    .book-info-text h1 {
+        font-size: 27px;
+    }
+
+    .reader-description {
+        font-size: 13px;
+    }
+
+    .reading-paper {
+        padding: 40px 30px;
+    }
+
+    .reader-content {
+        font-size: 17px;
+        line-height: 1.9;
+    }
+
+    .reader-bottom-controls {
+        justify-content: center;
+    }
+}
+
+
+/* ==================== RESPONSIVE: PHONE ==================== */
+
+@media (max-width: 480px) {
+
+    .reader-header {
+        padding: 11px 15px;
+        gap: 10px;
+    }
+
+    .reader-logo {
+        gap: 7px;
+        font-size: 19px;
+    }
+
+    .logo-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 15px;
+    }
+
+    .reader-header-actions {
+        gap: 9px;
+    }
+
+    .back-link {
+        gap: 5px;
+        font-size: 12px;
+    }
+
+    .reader-header .icon-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .reader-main {
+        padding: 22px 12px 35px;
+    }
+
+    .reader-book-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        padding: 22px 18px;
+        text-align: center;
+    }
+
+    .book-cover-wrapper {
+        width: 125px;
+        min-width: 125px;
+    }
+
+    .book-info-text {
+        width: 100%;
+    }
+
+    .free-badge {
+        margin-bottom: 10px;
+    }
+
+    .book-info-text h1 {
+        font-size: 25px;
+    }
+
+    .reader-author {
+        font-size: 13px;
+    }
+
+    .reader-description {
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+
+    .reading-meta {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .reader-toolbar {
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .toolbar-group {
+        gap: 7px;
+    }
+
+    .toolbar-button {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+
+    .reader-toolbar .icon-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .reading-paper {
+        padding: 32px 20px;
+        border-radius: 12px;
+    }
+
+    .chapter-heading {
+        margin-bottom: 32px;
+    }
+
+    .chapter-heading h2 {
+        font-size: 25px;
+    }
+
+    .chapter-label {
+        font-size: 10px;
+        letter-spacing: 1.4px;
+    }
+
+    .reader-content {
+        font-size: 16px;
+        line-height: 1.9;
+    }
+
+    .reader-content p {
+        margin-bottom: 21px;
+    }
+
+    .reader-content h2 {
+        font-size: 23px;
+    }
+
+    .reader-content h3 {
+        font-size: 20px;
+    }
+
+    .reader-content blockquote {
+        padding: 14px 16px;
+        margin: 22px 0;
+    }
+
+    .end-of-chapter {
+        margin-top: 30px;
+        padding-top: 25px;
+        font-size: 11px;
+    }
+
+    .reader-bottom-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .reader-bottom-controls > * {
+        width: 100%;
+    }
+
+    .reader-footer {
+        padding: 23px 15px;
+    }
+}
+
+
+/* ==================== REDUCED MOTION ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
