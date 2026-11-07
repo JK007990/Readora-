@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Readora Bookstore</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Login CSS -->
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+
+<body>
+
+    <!-- Background Decoration -->
+    <div class="auth-background">
+        <div class="orange-shape shape-one"></div>
+        <div class="orange-shape shape-two"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="auth-header">
+
+        <a href="index.html" class="auth-logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </span>
+            Readora<span class="logo-dot">.</span>
+        </a>
+
+        <a href="../index.html" class="back-home">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+
+    </header>
+
+
+    <!-- Login Section -->
+    <main class="auth-container">
+
+        <!-- Left Side -->
+        <section class="auth-visual">
+
+            <div class="visual-content">
+
+                <span class="visual-label">
+                    <i class="fa-solid fa-book-open"></i>
+                    YOUR NEXT CHAPTER STARTS HERE
+                </span>
+
+                <h1>
+                    Welcome back to
+                    <span>your world</span>
+                    of stories.
+                </h1>
+
+                <p>
+                    Every book opens a new door.
+                    Sign in and continue your reading journey
+                    with Readora.
+                </p>
+
+                <div class="visual-book">
+
+                    <div class="book-decoration book-decoration-one">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+
+                    <div class="book-decoration book-decoration-two">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div class="book-illustration">
+                        <div class="book-cover">
+                            <span class="book-small-text">A WORLD OF</span>
+                            <span class="book-title">Stories</span>
+                            <span class="book-line"></span>
+                            <i class="fa-solid fa-feather-pointed"></i>
+                            <span class="book-author">READ. DREAM. EXPLORE.</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-star star-one">✦</div>
+                    <div class="floating-star star-two">✧</div>
+                    <div class="floating-star star-three">✦</div>
+
+                </div>
+
+                <div class="visual-footer">
+                    <div class="reader-avatars">
+                        <span><i class="fa-solid fa-user"></i></span>
+                        <span><i class="fa-solid fa-user"></i></span>
+                        <span><i class="fa-solid fa-user"></i></span>
+                    </div>
+
+                    <p>
+                        <strong>Your reading journey</strong>
+                        <br>
+                        continues here.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Right Side: Login Form -->
+        <section class="auth-form-section">
+
+            <div class="auth-form-wrapper">
+
+                <div class="form-heading">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <span class="form-eyebrow">
+                        WELCOME BACK
+                    </span>
+
+                    <h2>Sign in to Readora</h2>
+
+                    <p>
+                        Enter your details to access your account.
+                    </p>
+
+                </div>
+
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="login-email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                id="login-email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <div class="label-row">
+                            <label for="login-password">
+                                Password
+                            </label>
+
+                            <a href="#" id="forgot-password">
+                                Forgot password?
+                            </a>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+
+                            <input
+                                type="password"
+                                id="login-password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggle-password"
+                                aria-label="Show password"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Remember Me -->
+                    <div class="form-options">
+
+                        <label class="remember-label">
+                            <input
+                                type="checkbox"
+                                id="remember-me"
+                                checked
+                            >
+                            <span>Remember me</span>
+                        </label>
+
+                    </div>
+
+
+                    <!-- Error / Success Message -->
+                    <div
+                        id="auth-message"
+                        class="auth-message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        id="login-submit"
+                        class="auth-submit"
+                    >
+                        <span>Sign In</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </form>
+
+
+                <!-- Sign Up Link -->
+                <div class="auth-switch">
+                    Don't have an account?
+                    <a href="signup.html">Create Account</a>
+                </div>
+
+
+                <!-- Divider -->
+                <div class="auth-divider">
+                    <span>YOUR READING JOURNEY AWAITS</span>
+                </div>
+
+
+                <!-- Back Home -->
+                <a href="index.html" class="explore-link">
+                    <i class="fa-solid fa-book-open"></i>
+                    Explore the bookstore
+                </a>
+
+
+                <!-- Terms -->
+                <p class="auth-terms">
+                    By signing in, you agree to our
+                    <a href="#">Terms of Service</a>
+                    and
+                    <a href="#">Privacy Policy</a>.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="auth-footer">
+        <p>
+            © <span id="current-year"></span> Readora Bookstore.
+            Made for book lovers.
+        </p>
+    </footer>
+
+
+    <!-- Login JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Current year
+            const year = document.getElementById("current-year");
+
+            if (year) {
+                year.textContent = new Date().getFullYear();
+            }
+
+            // Show / Hide password
+            const passwordInput =
+                document.getElementById("login-password");
+
+            const passwordToggle =
+                document.getElementById("toggle-password");
+
+            if (passwordInput && passwordToggle) {
+                passwordToggle.addEventListener("click", () => {
+
+                    const isPassword =
+                        passwordInput.type === "password";
+
+                    passwordInput.type =
+                        isPassword ? "text" : "password";
+
+                    passwordToggle.innerHTML = isPassword
+                        ? '<i class="fa-regular fa-eye-slash"></i>'
+                        : '<i class="fa-regular fa-eye"></i>';
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        isPassword ? "Hide password" : "Show password"
+                    );
+                });
+            }
+
+            // Forgot password is handled by Firebase JS.
+            const forgotPassword =
+                document.getElementById("forgot-password");
+
+            if (forgotPassword) {
+                forgotPassword.addEventListener("click", event => {
+                    event.preventDefault();
+
+                    const message =
+                        document.getElementById("auth-message");
+
+                    if (message) {
+                        message.textContent =
+                            "Enter your email address, then use the password reset option.";
+                        message.className =
+                            "auth-message auth-info";
+                    }
+
+                    if (passwordInput) {
+                        document.getElementById("login-email").focus();
+                    }
+                });
+            }
+
+        });
+    </script>
+
+    <!-- Firebase Login Logic -->
+    <script type="module" src="../js/auth.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Read Online | Readora</title>
+
+    <meta name="description"
+          content="Read books online for free with Readora.">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/reader.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="reader-header">
+
+        <a href="../index.html" class="reader-logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </span>
+            <span>Readora</span>
+        </a>
+
+        <div class="reader-header-actions">
+
+            <a href="books.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>All Books</span>
+            </a>
+
+            <button
+                type="button"
+                id="theme-toggle"
+                class="icon-button"
+                aria-label="Toggle reading theme"
+                title="Toggle reading theme"
+            >
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- READER MAIN -->
+    <main class="reader-main">
+
+        <!-- BOOK INFORMATION -->
+        <section class="reader-book-info">
+
+            <div class="book-cover-wrapper">
+                <img
+                    id="reader-cover"
+                    src="https://placehold.co/180x260/fff0e6/f47721?text=Readora"
+                    alt="Book cover"
+                >
+            </div>
+
+            <div class="book-info-text">
+
+                <span class="free-badge">
+                    <i class="fa-solid fa-book-open"></i>
+                    FREE READING
+                </span>
+
+                <h1 id="reader-title">Loading Book...</h1>
+
+                <p class="reader-author">
+                    By <span id="reader-author">Loading...</span>
+                </p>
+
+                <p id="reader-description" class="reader-description">
+                    Your reading journey starts here.
+                </p>
+
+                <div class="reading-meta">
+                    <span>
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="reading-time">Online Reader</span>
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-book-open"></i>
+                        <span id="reading-status">Ready to read</span>
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- READER TOOLBAR -->
+        <section class="reader-toolbar" aria-label="Reading controls">
+
+            <div class="toolbar-group">
+
+                <button
+                    type="button"
+                    id="decrease-font"
+                    class="icon-button"
+                    aria-label="Decrease font size"
+                    title="Decrease font size"
+                >
+                    <i class="fa-solid fa-minus"></i>
+                </button>
+
+                <span id="font-size-label">18px</span>
+
+                <button
+                    type="button"
+                    id="increase-font"
+                    class="icon-button"
+                    aria-label="Increase font size"
+                    title="Increase font size"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+
+            </div>
+
+            <div class="toolbar-group">
+
+                <button
+                    type="button"
+                    id="previous-chapter"
+                    class="toolbar-button"
+                    disabled
+                >
+                    <i class="fa-solid fa-chevron-left"></i>
+                    Previous
+                </button>
+
+                <button
+                    type="button"
+                    id="next-chapter"
+                    class="toolbar-button"
+                    disabled
+                >
+                    Next
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- READING PROGRESS -->
+        <section class="reading-progress-section">
+
+            <div class="progress-info">
+                <span>Reading Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+
+            <div
+                class="progress-track"
+                role="progressbar"
+                aria-label="Reading progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                id="progress-track"
+            >
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+
+        </section>
+
+
+        <!-- BOOK CONTENT -->
+        <article class="reading-paper">
+
+            <div class="chapter-heading">
+
+                <span id="chapter-label" class="chapter-label">
+                    YOUR READING SPACE
+                </span>
+
+                <h2 id="chapter-title">Welcome to Readora</h2>
+
+                <div class="chapter-divider"></div>
+
+            </div>
+
+            <div id="reader-content" class="reader-content">
+
+                <p>
+                    Welcome to Readora, your online reading space.
+                </p>
+
+                <p>
+                    The reading content for your selected book will appear here.
+                </p>
+
+            </div>
+
+            <div id="reader-notice" class="reader-notice" hidden>
+                This book's reading content has not been added yet.
+            </div>
+
+            <div class="end-of-chapter" id="end-of-chapter">
+                <i class="fa-solid fa-bookmark"></i>
+                <span>Keep reading with Readora</span>
+            </div>
+
+        </article>
+
+
+        <!-- READER FOOTER CONTROLS -->
+        <section class="reader-bottom-controls">
+
+            <button
+                type="button"
+                id="bottom-previous"
+                class="toolbar-button"
+                disabled
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                Previous Chapter
+            </button>
+
+            <a href="books.html" class="browse-more-button">
+                <i class="fa-solid fa-book-open"></i>
+                Explore More Books
+            </a>
+
+            <button
+                type="button"
+                id="bottom-next"
+                class="primary-reader-button"
+                disabled
+            >
+                Next Chapter
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="reader-footer">
+        <a href="../index.html">Readora</a>
+        <p>Discover stories. Expand your world.</p>
+        <span>&copy; <span id="current-year">2026</span> Readora Bookstore</span>
+    </footer>
+
+
+    <!-- READER JAVASCRIPT -->
+    <script type="module" src="../JS/reader.js"></script>
+
+</body>
+</html>

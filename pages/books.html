@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>All Books | Readora</title>
+
+    <link rel="stylesheet" href="../css/books.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        .book-search {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 520px;
+            min-height: 48px;
+            margin: 26px 0 20px;
+            padding: 0 15px;
+            border: 1px solid #dedbe5;
+            border-radius: 12px;
+            background: #fff;
+            transition: .2s ease;
+        }
+
+        .book-search:focus-within {
+            border-color: #8b6ccf;
+            box-shadow: 0 0 0 3px rgba(139,108,207,.12);
+        }
+
+        .book-search > i {
+            color: #8b8495;
+        }
+
+        .book-search input {
+            flex: 1;
+            min-width: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #292532;
+            font: inherit;
+            font-size: 14px;
+        }
+
+        .book-search input::placeholder {
+            color: #9993a1;
+        }
+
+        .book-search button {
+            display: none;
+            border: 0;
+            padding: 5px;
+            background: transparent;
+            color: #817b89;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .book-search button.is-visible {
+            display: inline-flex;
+        }
+
+        .no-books-message {
+            margin: 28px 0;
+            color: #77717f;
+            text-align: center;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media(max-width:600px) {
+            .book-search {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="nav-container">
+
+        <a href="../index.html" class="brand">
+            <span class="brand-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </span>
+            <span>Readora<span class="brand-dot">.</span></span>
+        </a>
+
+        <nav class="main-nav">
+            <a href="../index.html">Home</a>
+            <a href="../index.html#categories">Categories</a>
+            <a href="books.html" class="active">Books</a>
+            <a href="../index.html#about">About</a>
+        </nav>
+
+        <a href="../index.html" class="back-home">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+    </div>
+</header>
+
+<main>
+
+    <section class="books-hero">
+        <div class="container">
+
+            <div class="eyebrow">
+                <span></span>
+                THE READORA COLLECTION
+            </div>
+
+            <h1>
+                Find your next<br>
+                favorite <span>book.</span>
+            </h1>
+
+            <p>
+                Explore stories, discover new ideas, and find the book
+                that speaks to you.
+            </p>
+
+            <div class="collection-note">
+                <i class="fa-solid fa-book-open"></i>
+                A little world inside every book.
+            </div>
+
+        </div>
+    </section>
+
+    <section class="all-books-section" id="all-books">
+        <div class="container">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">EXPLORE & DISCOVER</span>
+
+                    <h2>
+                        All Books<span class="brand-dot">.</span>
+                    </h2>
+
+                    <p>Explore our growing collection of books.</p>
+                </div>
+
+                <span class="book-count">8 books</span>
+
+            </div>
+
+            <!-- SEARCH BAR -->
+
+            <div class="book-search" role="search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="bookSearch"
+                    placeholder="Search books, authors or categories..."
+                    autocomplete="off"
+                    aria-label="Search books"
+                >
+
+                <button id="clearSearch"
+                        type="button"
+                        aria-label="Clear search">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+            <!-- CATEGORY FILTER -->
+
+            <div class="category-list">
+
+                <a href="#all-books"
+                   class="category-chip active"
+                   aria-pressed="true">
+                    All Books
+                </a>
+
+                <a href="#Psychology"
+                   class="category-chip"
+                   aria-pressed="false">
+                    Psychology
+                </a>
+
+                <a href="#Self-Help"
+                   class="category-chip"
+                   aria-pressed="false">
+                    Self-Help
+                </a>
+
+                <a href="#Business"
+                   class="category-chip"
+                   aria-pressed="false">
+                    Business
+                </a>
+
+                <a href="#Fiction"
+                   class="category-chip"
+                   aria-pressed="false">
+                    Fiction
+                </a>
+
+            </div>
+
+            <!-- BOOK GRID -->
+
+            <div class="books-grid">
+
+                <!-- BOOK 1 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=atomic-habits"
+                       class="book-cover cover-1"
+                       aria-label="View Atomic Habits details">
+
+                        <span class="book-badge">BESTSELLER</span>
+                        <span class="cover-circle circle-one"></span>
+                        <span class="cover-circle circle-two"></span>
+
+                        <div class="cover-content">
+                            <h3>ATOMIC<br>HABITS</h3>
+                            <span>JAMES CLEAR</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Self-Help</span>
+                        <h3>Atomic Habits</h3>
+                        <p>James Clear</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$18.99</span>
+
+                            <a href="book-details.html?id=atomic-habits"
+                               class="book-action"
+                               aria-label="View Atomic Habits">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 2 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=psychology-of-money"
+                       class="book-cover cover-2">
+
+                        <span class="book-badge popular">POPULAR</span>
+                        <span class="cover-ring"></span>
+
+                        <div class="cover-content">
+                            <h3>THE<br>PSYCHOLOGY<br>OF MONEY</h3>
+                            <span>MORGAN HOUSEL</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Psychology</span>
+                        <h3>The Psychology of Money</h3>
+                        <p>Morgan Housel</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">Read Now</span>
+
+                            <a href="book-details.html?id=psychology-of-money"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 3 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=dopamine-nation"
+                       class="book-cover cover-3">
+
+                        <span class="cover-sun"></span>
+
+                        <div class="cover-content">
+                            <h3>DOPAMINE<br>NATION</h3>
+                            <span>ANNA LEMBKE, MD</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Psychology</span>
+                        <h3>Dopamine Nation</h3>
+                        <p>Anna Lembke</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$17.50</span>
+
+                            <a href="book-details.html?id=dopamine-nation"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 4 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=the-mountain-is-you"
+                       class="book-cover cover-4">
+
+                        <div class="cover-mountain"></div>
+
+                        <div class="cover-content">
+                            <h3>THE<br>MOUNTAIN<br>IS YOU</h3>
+                            <span>BRIANNA WIEST</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Self-Help</span>
+                        <h3>The Mountain Is You</h3>
+                        <p>Brianna Wiest</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$15.99</span>
+
+                            <a href="book-details.html?id=the-mountain-is-you"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 5 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=think-and-grow-rich"
+                       class="book-cover cover-5">
+
+                        <div class="cover-content">
+                            <h3>THINK<br>AND GROW<br>RICH</h3>
+                            <span>NAPOLEON HILL</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Business</span>
+                        <h3>Think and Grow Rich</h3>
+                        <p>Napoleon Hill</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$14.99</span>
+
+                            <a href="book-details.html?id=think-and-grow-rich"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 6 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=rich-dad-poor-dad"
+                       class="book-cover cover-6">
+
+                        <div class="cover-content">
+                            <h3>RICH DAD<br>POOR DAD</h3>
+                            <span>ROBERT T. KIYOSAKI</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Business</span>
+                        <h3>Rich Dad Poor Dad</h3>
+                        <p>Robert T. Kiyosaki</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$16.50</span>
+
+                            <a href="book-details.html?id=rich-dad-poor-dad"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 7 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=the-alchemist"
+                       class="book-cover cover-7">
+
+                        <div class="cover-content">
+                            <h3>THE<br>ALCHEMIST</h3>
+                            <span>PAULO COELHO</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Fiction</span>
+                        <h3>The Alchemist</h3>
+                        <p>Paulo Coelho</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$13.99</span>
+
+                            <a href="book-details.html?id=the-alchemist"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+                <!-- BOOK 8 -->
+
+                <article class="book-card">
+
+                    <a href="book-details.html?id=ikigai"
+                       class="book-cover cover-8">
+
+                        <div class="cover-content">
+                            <h3>IKIGAI</h3>
+                            <span>HÉCTOR GARCÍA & FRANCESC MIRALLES</span>
+                        </div>
+
+                    </a>
+
+                    <div class="book-info">
+                        <span class="book-category">Self-Help</span>
+                        <h3>Ikigai</h3>
+                        <p>Héctor García & Francesc Miralles</p>
+
+                        <div class="book-bottom">
+                            <span class="book-price">$14.50</span>
+
+                            <a href="book-details.html?id=ikigai"
+                               class="book-action">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+
+            </div>
+
+            <p class="no-books-message" id="noBooksMessage" hidden>
+                No books found. Try another title, author or category.
+            </p>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+
+    <a href="../index.html" class="brand footer-brand">
+        <span class="brand-icon">
+            <i class="fa-solid fa-book-open"></i>
+        </span>
+        <span>Readora<span class="brand-dot">.</span></span>
+    </a>
+
+    <p>Discover your next favorite book.</p>
+
+    <span class="copyright">
+        © 2026 Readora. All rights reserved.
+    </span>
+
+</footer>
+
+<script src="../JS/book.js" defer></script>
+
+</body>
+</html>

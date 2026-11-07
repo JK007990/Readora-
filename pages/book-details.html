@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Details | Readora</title>
+
+    <link rel="stylesheet" href="../css/book-details.css">
+
+    <script type="module" src="../JS/book-details.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+    <a href="../index.html" class="logo">Readora<span>.</span></a>
+
+    <nav class="header-nav">
+        <a href="books.html">Books</a>
+        <a href="profile.html">Profile</a>
+    </nav>
+
+    <a href="books.html" class="back-button">
+        ← <span>Browse Books</span>
+    </a>
+</header>
+
+<main class="page-container">
+
+    <div class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <a href="books.html">Books</a>
+        <span>/</span>
+        <span id="breadcrumb-title">Book Details</span>
+    </div>
+
+    <section class="book-details">
+
+        <div class="book-cover-container">
+            <div class="book-cover" id="book-cover">
+                <span>📚</span>
+            </div>
+        </div>
+
+        <div class="book-information">
+
+            <span class="book-category" id="book-category">
+                Category
+            </span>
+
+            <h1 id="book-title">Book Title</h1>
+
+            <p class="book-author">
+                by <span id="book-author">Author</span>
+            </p>
+
+            <div class="rating-summary">
+                <div class="average-stars" id="average-stars">
+                    ☆☆☆☆☆
+                </div>
+
+                <strong id="average-rating">0.0</strong>
+
+                <span id="rating-count">(0 ratings)</span>
+            </div>
+
+            <p class="book-short-description" id="book-short-description"></p>
+
+            <div class="book-metadata">
+                <div>
+                    <span>Category</span>
+                    <strong id="meta-category">-</strong>
+                </div>
+
+                <div>
+                    <span>Author</span>
+                    <strong id="meta-author">-</strong>
+                </div>
+            </div>
+
+            <div class="book-actions">
+                <button id="save-book-button" class="save-button">
+                    ♡ Save Book
+                </button>
+
+                <a href="reader.html" id="read-now-button" class="read-button">
+                    Read Now →
+                </a>
+            </div>
+
+            <p id="save-message" class="status-message"></p>
+
+        </div>
+
+    </section>
+
+    <!-- BOOK SUMMARY -->
+
+    <section class="book-summary-section">
+        <div class="section-heading">
+            <span>ABOUT THIS BOOK</span>
+            <h2>Book Summary</h2>
+        </div>
+
+        <p id="book-description">
+            Loading book description...
+        </p>
+    </section>
+
+    <!-- RATING SECTION -->
+
+    <section class="rating-section">
+
+        <div class="section-heading">
+            <span>YOUR OPINION MATTERS</span>
+            <h2>Rate This Book</h2>
+            <p>Share your experience with other readers.</p>
+        </div>
+
+        <div class="rating-card">
+
+            <div id="rating-login-required" class="rating-login">
+
+                <div class="rating-lock">🔒</div>
+
+                <h3>Login Required</h3>
+
+                <p>
+                    You need to sign in to your account
+                    before rating this book.
+                </p>
+
+                <a href="login.html" class="rating-login-button">
+                    Sign In
+                </a>
+
+            </div>
+
+            <div id="rating-form" class="rating-form" hidden>
+
+                <h3 id="rating-form-title">How would you rate this book?</h3>
+
+                <div class="rating-stars-input" id="user-rating-stars">
+
+                    <button type="button" data-rating="1" aria-label="1 star">★</button>
+                    <button type="button" data-rating="2" aria-label="2 stars">★</button>
+                    <button type="button" data-rating="3" aria-label="3 stars">★</button>
+                    <button type="button" data-rating="4" aria-label="4 stars">★</button>
+                    <button type="button" data-rating="5" aria-label="5 stars">★</button>
+
+                </div>
+
+                <p id="selected-rating-text">
+                    Select your rating
+                </p>
+
+                <button type="button" id="submit-rating-button" disabled>
+                    Submit Rating
+                </button>
+
+                <p id="rating-message" class="status-message"></p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <p>© 2026 Readora. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
