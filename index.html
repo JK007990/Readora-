@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Readora | Discover Your Next Favorite Book</title>
+
+    <meta name="description"
+          content="Discover amazing books, explore new worlds and find your next favorite read at Readora.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="site-header">
+        <div class="navbar container">
+
+            <a href="index.html" class="logo">
+                <span class="logo-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </span>
+                Readora<span class="logo-dot">.</span>
+            </a>
+
+            <nav class="main-nav" id="mainNav">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="#categories" class="nav-link">Categories</a>
+                <a href="pages/books.html" class="nav-link">Books</a>
+                <a href="#about" class="nav-link">About</a>
+            </nav>
+
+            <div class="header-actions">
+
+                <!-- Guest Actions -->
+                <div class="guest-actions" id="guestActions">
+                    <a href="pages/login.html" class="login-link">Log in</a>
+                    <a href="pages/signup.html" class="signup-link">Sign up</a>
+                </div>
+
+                <!-- User Profile -->
+                <div class="user-area hidden" id="userArea">
+
+                    <button class="avatar-btn" id="avatarBtn"
+                            aria-label="Open profile menu">
+
+                        <img id="headerAvatar" src="" alt="Profile">
+                        <span id="avatarFallback">R</span>
+                    </button>
+
+                    <div class="profile-menu hidden" id="profileMenu">
+
+                        <div class="profile-summary">
+
+                            <div class="profile-avatar-small">
+                                <img id="menuAvatar" src="" alt="Profile">
+                                <span id="menuAvatarFallback">R</span>
+                            </div>
+
+                            <div class="profile-text">
+                                <strong id="userDisplayName">Reader</strong>
+                                <span id="userEmail"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="menu-divider"></div>
+
+                        <a href="pages/profile.html">
+                            <i class="fa-regular fa-user"></i>
+                            My Profile
+                        </a>
+
+                        <a href="#bestsellers">
+                            <i class="fa-solid fa-book"></i>
+                            Browse Books
+                        </a>
+
+                        <button type="button" id="logoutBtn">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            Log out
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false">
+
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- HERO SECTION -->
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-inner container">
+
+                <div class="hero-copy">
+
+                    <div class="hero-label">
+                        <i class="fa-solid fa-sparkles"></i>
+                        YOUR NEXT CHAPTER STARTS HERE
+                    </div>
+
+                    <h1>
+                        Find your next
+                        <span>favorite book.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        A little escape, a new perspective, a whole new world.
+                        Discover books that inspire you, challenge you, and
+                        stay with you long after the last page.
+                    </p>
+
+                    <div class="hero-buttons">
+
+                        <a href="pages/books.html" class="btn btn-primary">
+                            Explore Books
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                        <a href="#categories" class="btn btn-secondary">
+                            Browse Categories
+                        </a>
+
+                    </div>
+
+                    <div class="hero-stats">
+
+                        <div class="stat-item">
+                            <strong>1,200<span>+</span></strong>
+                            <small>Books to explore</small>
+                        </div>
+
+                        <div class="stat-divider"></div>
+
+                        <div class="stat-item">
+                            <strong>15<span>+</span></strong>
+                            <small>Book categories</small>
+                        </div>
+
+                        <div class="stat-divider"></div>
+
+                        <div class="stat-item">
+                            <strong>4.9<span>/5</span></strong>
+                            <small>Reader rating</small>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- Decorative Book Illustration -->
+
+                <div class="hero-art">
+
+                    <div class="hero-circle"></div>
+                    <div class="hero-circle-outline"></div>
+
+                    <div class="floating-star star-one">✦</div>
+                    <div class="floating-star star-two">✧</div>
+                    <div class="floating-star star-three">✦</div>
+
+                    <div class="hero-book book-one">
+                        <div class="book-spine"></div>
+
+                        <div class="book-cover-content">
+                            <span class="cover-small-text">THE ART OF</span>
+                            <strong>CREATIVE<br>THINKING</strong>
+                            <span class="cover-decoration">✳</span>
+                            <small>EXPLORE YOUR MIND</small>
+                        </div>
+                    </div>
+
+                    <div class="hero-book book-two">
+                        <div class="book-spine"></div>
+
+                        <div class="book-cover-content">
+                            <span class="cover-small-text">A JOURNEY INTO</span>
+                            <strong>YOUR<br>INNER<br>WORLD</strong>
+                            <span class="cover-decoration">☼</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-book book-three">
+                        <div class="book-spine"></div>
+
+                        <div class="book-cover-content">
+                            <span class="cover-small-text">DISCOVER</span>
+                            <strong>NEW<br>WORLDS</strong>
+                            <span class="cover-decoration">❋</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-note">
+
+                        <span class="note-icon">
+                            <i class="fa-solid fa-heart"></i>
+                        </span>
+
+                        <div>
+                            <strong>A book is a gift</strong>
+                            <small>you can open again and again.</small>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CATEGORIES -->
+
+        <section class="categories-section section-wrap"
+                 id="categories">
+
+            <div class="container">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-kicker">FIND YOUR INTEREST</span>
+                        <h2>Explore categories<span>.</span></h2>
+                    </div>
+
+                    <a href="pages/books.html" class="text-link">
+                        Explore all
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+<div class="category-grid">
+
+    <a href="pages/books.html?category=BL-Fiction"
+       class="category-card"
+       data-category-filter="BL Fiction">
+        <div class="category-icon category-orange">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <div>
+            <h3>BL Fiction</h3>
+            <p>Enter new life</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+    </a>
+
+    <a href="pages/books.html?category=GL-Fiction"
+       class="category-card"
+       data-category-filter="GL Fiction">
+        <div class="category-icon category-pink">
+            <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <div>
+            <h3>GL Fiction</h3>
+            <p>Enter new worlds</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+    </a>
+
+    <a href="pages/books.html?category=Normal-Fiction"
+       class="category-card"
+       data-category-filter="Normal Fiction">
+        <div class="category-icon category-yellow">
+            <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div>
+            <h3>Normal Fiction</h3>
+            <p>Romance</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+    </a>
+
+    <a href="pages/books.html?category=Non-Fiction"
+       class="category-card"
+       data-category-filter="Non Fiction">
+        <div class="category-icon category-purple">
+            <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <div>
+            <h3>Non Fiction</h3>
+            <p>Understand people</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+    </a>
+
+    <a href="pages/books.html?category=Manga-and-Comics"
+       class="category-card"
+       data-category-filter="Manga & Comics">
+        <div class="category-icon category-green">
+            <i class="fa-solid fa-user-pen"></i>
+        </div>
+        <div>
+            <h3>Manga &amp; Comics</h3>
+            <p>Engaging visual stories</p>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+    </a>
+
+</div>
+
+    </div>
+    </section>
+
+        <!-- PROMO BANNER -->
+
+        <section class="reading-banner section-wrap">
+
+            <div class="container">
+                <div class="reading-banner-inner">
+
+                    <div class="banner-content">
+
+                        <span class="section-kicker">
+                            A LITTLE INSPIRATION
+                        </span>
+
+                        <h2>
+                            One book can
+                            <span>change everything.</span>
+                        </h2>
+
+                        <p>
+                            Make room for new ideas, fresh perspectives
+                            and stories you'll never forget.
+                        </p>
+
+                        <a href="#bestsellers" class="btn btn-dark">
+                            Find Your Next Read
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="banner-decoration"
+                         aria-hidden="true">
+
+                        <div class="banner-book banner-book-one"></div>
+                        <div class="banner-book banner-book-two"></div>
+                        <div class="banner-book banner-book-three"></div>
+
+                        <div class="banner-star">✳</div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ABOUT -->
+
+        <section class="about-section section-wrap" id="about">
+
+            <div class="container about-inner">
+
+                <div class="about-icon">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+
+                <div class="about-content">
+
+                    <span class="section-kicker">ABOUT READORA</span>
+
+                    <h2>
+                        For the love of
+                        <span>getting lost in a book.</span>
+                    </h2>
+
+                    <p>
+                        Readora is a place for curious minds and passionate
+                        readers. Explore inspiring ideas, discover meaningful
+                        stories and find the book that speaks to you.
+                    </p>
+
+                </div>
+
+                <a href="#categories" class="btn btn-primary about-btn">
+                    Discover More
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- NEWSLETTER -->
+
+    <section class="newsletter-section">
+
+        <div class="container newsletter-inner">
+
+            <div>
+                <span class="section-kicker">THE READORA LETTER</span>
+
+                <h2>A little book love, delivered.</h2>
+
+                <p>
+                    Discover reading inspiration and new favorites.
+                </p>
+            </div>
+
+            <form class="newsletter-form" id="newsletterForm">
+
+                <label for="newsletterEmail" class="visually-hidden">
+                    Your email address
+                </label>
+
+                <input
+                    type="email"
+                    id="newsletterEmail"
+                    placeholder="Enter your email address"
+                    required
+                >
+
+                <button type="submit">
+                    Subscribe
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </form>
+
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-main">
+
+                <div class="footer-brand">
+
+                    <a href="index.html" class="logo footer-logo">
+
+                        <span class="logo-icon">
+                            <i class="fa-solid fa-book-open"></i>
+                        </span>
+
+                        Readora<span class="logo-dot">.</span>
+
+                    </a>
+
+                    <p>
+                        Every book opens a door.<br>
+                        Find yours with Readora.
+                    </p>
+
+                    <div class="social-links">
+
+                        <a href="#" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+
+                        <a href="#" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+
+                        <a href="#" aria-label="Pinterest">
+                            <i class="fa-brands fa-pinterest-p"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>Explore</h3>
+
+                    <a href="#categories">Categories</a>
+                    <a href="#bestsellers">Best Sellers</a>
+                    <a href="#about">About Readora</a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>Your Account</h3>
+
+                    <a href="pages/login.html">Log In</a>
+                    <a href="pages/signup.html">Create Account</a>
+                    <a href="pages/profile.html">My Profile</a>
+
+                </div>
+
+
+                <div class="footer-column">
+
+                    <h3>Discover</h3>
+
+                    <a href="#bestsellers">Popular Books</a>
+                    <a href="#categories">Reading Categories</a>
+                    <a href="#about">Our Story</a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © <span id="currentYear"></span>
+                    Readora. All rights reserved.
+                </p>
+
+                <p>
+                    Made for people who love
+                    <i class="fa-solid fa-heart footer-heart"></i>
+                    reading.
+                </p>
+
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- Notification -->
+
+    <div class="toast" id="toast"
+         role="status"
+         aria-live="polite"></div>
+
+
+    <!-- External JavaScript -->
+    <script type="module" src="JS/script.js"></script>
+
+</body>
+</html>
