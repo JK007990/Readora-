@@ -1,4 +1,3 @@
-
 "use strict";
 
 import { auth, db, authPersistence } from "./firebase-config.js";
