@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Readora Bookstore</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Shared Authentication CSS -->
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+
+<body>
+
+    <!-- Background Decoration -->
+    <div class="auth-background">
+        <div class="orange-shape shape-one"></div>
+        <div class="orange-shape shape-two"></div>
+    </div>
+
+
+    <!-- Header -->
+    <header class="auth-header">
+
+        <a href="index.html" class="auth-logo">
+            <span class="logo-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </span>
+
+            Readora<span class="logo-dot">.</span>
+        </a>
+
+        <a href="../index.html" class="back-home">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="auth-container">
+
+        <!-- Left Visual Panel -->
+        <section class="auth-visual">
+
+            <div class="visual-content">
+
+                <span class="visual-label">
+                    <i class="fa-solid fa-sparkles"></i>
+                    BEGIN YOUR READING JOURNEY
+                </span>
+
+                <h1>
+                    A new chapter
+                    <span>begins</span>
+                    with you.
+                </h1>
+
+                <p>
+                    Join Readora and discover stories,
+                    explore new ideas, and find the books
+                    that inspire your next adventure.
+                </p>
+
+
+                <!-- Book Illustration -->
+                <div class="visual-book">
+
+                    <div class="book-decoration book-decoration-one">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+
+                    <div class="book-decoration book-decoration-two">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+
+                    <div class="book-illustration">
+
+                        <div class="book-cover">
+
+                            <span class="book-small-text">
+                                YOUR NEXT
+                            </span>
+
+                            <span class="book-title">
+                                Chapter
+                            </span>
+
+                            <span class="book-line"></span>
+
+                            <i class="fa-solid fa-feather-pointed"></i>
+
+                            <span class="book-author">
+                                STARTS WITH A BOOK
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="floating-star star-one">✦</div>
+                    <div class="floating-star star-two">✧</div>
+                    <div class="floating-star star-three">✦</div>
+
+                </div>
+
+
+                <!-- Visual Footer -->
+                <div class="visual-footer">
+
+                    <div class="reader-avatars">
+                        <span>
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                    </div>
+
+                    <p>
+                        <strong>Make reading a habit</strong>
+                        <br>
+                        One book at a time.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Right: Sign Up Form -->
+        <section class="auth-form-section">
+
+            <div class="auth-form-wrapper">
+
+                <!-- Form Heading -->
+                <div class="form-heading">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+
+                    <span class="form-eyebrow">
+                        JOIN READORA
+                    </span>
+
+                    <h2>Create your account</h2>
+
+                    <p>
+                        Sign up and start exploring your next favorite book.
+                    </p>
+
+                </div>
+
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="auth-form">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+
+                        <label for="signup-name">
+                            Full Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-user input-icon"></i>
+
+                            <input
+                                type="text"
+                                id="signup-name"
+                                name="name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                                minlength="2"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+                    <div class="form-group">
+
+                        <label for="signup-email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-regular fa-envelope input-icon"></i>
+
+                            <input
+                                type="email"
+                                id="signup-email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="form-group">
+
+                        <label for="signup-password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock input-icon"></i>
+
+                            <input
+                                type="password"
+                                id="signup-password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-toggle-password="signup-password"
+                                aria-label="Show password"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Confirm Password -->
+                    <div class="form-group">
+
+                        <label for="signup-confirm-password">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock input-icon"></i>
+
+                            <input
+                                type="password"
+                                id="signup-confirm-password"
+                                name="confirm-password"
+                                placeholder="Enter your password again"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-toggle-password="signup-confirm-password"
+                                aria-label="Show password"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Terms -->
+                    <div class="form-options">
+
+                        <label class="remember-label">
+
+                            <input
+                                type="checkbox"
+                                id="agree-terms"
+                                required
+                            >
+
+                            <span>
+                                I agree to the
+                                <a href="#" id="terms-link">Terms</a>
+                                and
+                                <a href="#" id="privacy-link">Privacy Policy</a>
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Auth Message -->
+                    <div
+                        id="auth-message"
+                        class="auth-message"
+                        role="status"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        id="signup-submit"
+                        class="auth-submit"
+                    >
+
+                        <span>Create Account</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </form>
+
+
+                <!-- Login Link -->
+                <div class="auth-switch">
+                    Already have an account?
+                    <a href="login.html">Sign In</a>
+                </div>
+
+
+                <!-- Divider -->
+                <div class="auth-divider">
+                    <span>YOUR STORY STARTS HERE</span>
+                </div>
+
+
+                <!-- Explore -->
+                <a href="index.html" class="explore-link">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    Explore the bookstore
+
+                </a>
+
+
+                <!-- Terms Notice -->
+                <p class="auth-terms">
+                    Create your Readora account and discover
+                    your next favorite read.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="auth-footer">
+
+        <p>
+            © <span id="current-year"></span>
+            Readora Bookstore. Made for book lovers.
+        </p>
+
+    </footer>
+
+
+    <!-- Password Toggle -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Current year
+            const yearElement =
+                document.getElementById("current-year");
+
+            if (yearElement) {
+                yearElement.textContent =
+                    new Date().getFullYear();
+            }
+
+
+            // Show / Hide Password
+            document.querySelectorAll(
+                "[data-toggle-password]"
+            ).forEach(button => {
+
+                button.addEventListener("click", () => {
+
+                    const inputId =
+                        button.dataset.togglePassword;
+
+                    const passwordInput =
+                        document.getElementById(inputId);
+
+                    if (!passwordInput) return;
+
+                    const showPassword =
+                        passwordInput.type === "password";
+
+                    passwordInput.type =
+                        showPassword ? "text" : "password";
+
+                    button.innerHTML = showPassword
+                        ? '<i class="fa-regular fa-eye-slash"></i>'
+                        : '<i class="fa-regular fa-eye"></i>';
+
+                    button.setAttribute(
+                        "aria-label",
+                        showPassword
+                            ? "Hide password"
+                            : "Show password"
+                    );
+
+                });
+
+            });
+
+
+            // Terms and Privacy placeholders
+            ["terms-link", "privacy-link"].forEach(id => {
+
+                const link = document.getElementById(id);
+
+                if (link) {
+                    link.addEventListener("click", event => {
+                        event.preventDefault();
+                    });
+                }
+
+            });
+
+
+            // Check passwords before Firebase submission
+            const signupForm =
+                document.getElementById("signup-form");
+
+            if (signupForm) {
+
+                signupForm.addEventListener("submit", event => {
+
+                    const password =
+                        document.getElementById(
+                            "signup-password"
+                        ).value;
+
+                    const confirmPassword =
+                        document.getElementById(
+                            "signup-confirm-password"
+                        ).value;
+
+                    const message =
+                        document.getElementById("auth-message");
+
+                    if (password !== confirmPassword) {
+
+                        event.preventDefault();
+
+                        message.textContent =
+                            "Passwords do not match. Please try again.";
+
+                        message.className =
+                            "auth-message auth-error";
+
+                        document.getElementById(
+                            "signup-confirm-password"
+                        ).focus();
+
+                    } else if (password.length < 6) {
+
+                        event.preventDefault();
+
+                        message.textContent =
+                            "Password must be at least 6 characters.";
+
+                        message.className =
+                            "auth-message auth-error";
+
+                    } else {
+
+                        message.textContent = "";
+                        message.className = "auth-message";
+
+                    }
+
+                });
+
+            }
+
+        });
+    </script>
+
+
+    <!-- Firebase Authentication -->
+    <script type="module" src="../js/auth.js"></script>
+
+</body>
+</html>
