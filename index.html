@@ -8,30 +8,30 @@
     <title>Readora | Discover Your Next Favorite Book</title>
 
     <meta name="description"
-          content="Discover amazing books, explore new worlds and find your next favorite read at Readora.">
+        content="Discover amazing books, explore new worlds and find your next favorite read at Readora.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap"
-          rel="stylesheet">
+        rel="stylesheet">
 
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <!-- External CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <!-- HEADER -->
-
     <header class="site-header">
         <div class="navbar container">
 
+            <!-- LOGO -->
             <a href="index.html" class="logo">
                 <span class="logo-icon">
                     <i class="fa-solid fa-book-open"></i>
@@ -39,11 +39,14 @@
                 Readora<span class="logo-dot">.</span>
             </a>
 
-            <nav class="main-nav" id="mainNav">
+            <!-- NAVIGATION -->
+            <nav class="main-nav" id="mainNav" aria-label="Main navigation">
                 <a href="index.html" class="nav-link active">Home</a>
-                <a href="#categories" class="nav-link">Categories</a>
+                <a href="index.html#categories" class="nav-link">Categories</a>
                 <a href="pages/books.html" class="nav-link">Books</a>
-                <a href="#about" class="nav-link">About</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="pages/authors.html" class="nav-link">Author</a>
+                <a href="pages/settings.html" class="nav-link">Settings</a>
             </nav>
 
             <div class="header-actions">
@@ -58,7 +61,7 @@
                 <div class="user-area hidden" id="userArea">
 
                     <button class="avatar-btn" id="avatarBtn"
-                            aria-label="Open profile menu">
+                        aria-label="Open profile menu">
 
                         <img id="headerAvatar" src="" alt="Profile">
                         <span id="avatarFallback">R</span>
@@ -101,9 +104,12 @@
                 </div>
 
                 <!-- Mobile Menu -->
-                <button class="mobile-menu-btn" id="mobileMenuBtn"
-                        aria-label="Toggle navigation"
-                        aria-expanded="false">
+                <button class="mobile-menu-btn"
+                    id="mobileMenuBtn"
+                    type="button"
+                    aria-label="Toggle navigation"
+                    aria-controls="mainNav"
+                    aria-expanded="false">
 
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -114,7 +120,6 @@
 
 
     <!-- HERO SECTION -->
-
     <main>
 
         <section class="hero">
@@ -175,9 +180,7 @@
                     </div>
                 </div>
 
-
                 <!-- Decorative Book Illustration -->
-
                 <div class="hero-art">
 
                     <div class="hero-circle"></div>
@@ -237,9 +240,7 @@
 
 
         <!-- CATEGORIES -->
-
-        <section class="categories-section section-wrap"
-                 id="categories">
+        <section class="categories-section section-wrap" id="categories">
 
             <div class="container">
 
@@ -257,81 +258,95 @@
 
                 </div>
 
+                <div class="category-grid">
 
-<div class="category-grid">
+                    <a href="pages/books.html?category=BL-Fiction"
+                        class="category-card"
+                        data-category-filter="BL Fiction">
 
-    <a href="pages/books.html?category=BL-Fiction"
-       class="category-card"
-       data-category-filter="BL Fiction">
-        <div class="category-icon category-orange">
-            <i class="fa-solid fa-brain"></i>
-        </div>
-        <div>
-            <h3>BL Fiction</h3>
-            <p>Enter new life</p>
-        </div>
-        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
-    </a>
+                        <div class="category-icon category-orange">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
 
-    <a href="pages/books.html?category=GL-Fiction"
-       class="category-card"
-       data-category-filter="GL Fiction">
-        <div class="category-icon category-pink">
-            <i class="fa-solid fa-feather-pointed"></i>
-        </div>
-        <div>
-            <h3>GL Fiction</h3>
-            <p>Enter new worlds</p>
-        </div>
-        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
-    </a>
+                        <div>
+                            <h3>BL Fiction</h3>
+                            <p>Enter new life</p>
+                        </div>
 
-    <a href="pages/books.html?category=Normal-Fiction"
-       class="category-card"
-       data-category-filter="Normal Fiction">
-        <div class="category-icon category-yellow">
-            <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <div>
-            <h3>Normal Fiction</h3>
-            <p>Romance</p>
-        </div>
-        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
-    </a>
+                        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+                    </a>
 
-    <a href="pages/books.html?category=Non-Fiction"
-       class="category-card"
-       data-category-filter="Non Fiction">
-        <div class="category-icon category-purple">
-            <i class="fa-solid fa-lightbulb"></i>
-        </div>
-        <div>
-            <h3>Non Fiction</h3>
-            <p>Understand people</p>
-        </div>
-        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
-    </a>
+                    <a href="pages/books.html?category=GL-Fiction"
+                        class="category-card"
+                        data-category-filter="GL Fiction">
 
-    <a href="pages/books.html?category=Manga-and-Comics"
-       class="category-card"
-       data-category-filter="Manga & Comics">
-        <div class="category-icon category-green">
-            <i class="fa-solid fa-user-pen"></i>
-        </div>
-        <div>
-            <h3>Manga &amp; Comics</h3>
-            <p>Engaging visual stories</p>
-        </div>
-        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
-    </a>
+                        <div class="category-icon category-pink">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                        </div>
 
-</div>
+                        <div>
+                            <h3>GL Fiction</h3>
+                            <p>Enter new worlds</p>
+                        </div>
 
-    </div>
-    </section>
+                        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+                    </a>
+
+                    <a href="pages/books.html?category=Normal-Fiction"
+                        class="category-card"
+                        data-category-filter="Normal Fiction">
+
+                        <div class="category-icon category-yellow">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+
+                        <div>
+                            <h3>Normal Fiction</h3>
+                            <p>Romance</p>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+                    </a>
+
+                    <a href="pages/books.html?category=Non-Fiction"
+                        class="category-card"
+                        data-category-filter="Non Fiction">
+
+                        <div class="category-icon category-purple">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+
+                        <div>
+                            <h3>Non Fiction</h3>
+                            <p>Understand people</p>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+                    </a>
+
+                    <a href="pages/books.html?category=Manga-and-Comics"
+                        class="category-card"
+                        data-category-filter="Manga & Comics">
+
+                        <div class="category-icon category-green">
+                            <i class="fa-solid fa-user-pen"></i>
+                        </div>
+
+                        <div>
+                            <h3>Manga &amp; Comics</h3>
+                            <p>Engaging visual stories</p>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-up-right-from-square category-arrow"></i>
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
 
         <!-- PROMO BANNER -->
-
         <section class="reading-banner section-wrap">
 
             <div class="container">
@@ -360,8 +375,7 @@
 
                     </div>
 
-                    <div class="banner-decoration"
-                         aria-hidden="true">
+                    <div class="banner-decoration" aria-hidden="true">
 
                         <div class="banner-book banner-book-one"></div>
                         <div class="banner-book banner-book-two"></div>
@@ -377,7 +391,6 @@
 
 
         <!-- ABOUT -->
-
         <section class="about-section section-wrap" id="about">
 
             <div class="container about-inner">
@@ -415,7 +428,6 @@
 
 
     <!-- NEWSLETTER -->
-
     <section class="newsletter-section">
 
         <div class="container newsletter-inner">
@@ -455,7 +467,6 @@
 
 
     <!-- FOOTER -->
-
     <footer class="site-footer">
 
         <div class="container">
@@ -552,13 +563,12 @@
 
 
     <!-- Notification -->
-
     <div class="toast" id="toast"
-         role="status"
-         aria-live="polite"></div>
+        role="status"
+        aria-live="polite"></div>
 
 
-    <!-- External JavaScript -->
+    <!-- JavaScript -->
     <script type="module" src="JS/script.js"></script>
 
 </body>
