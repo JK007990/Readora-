@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors | Readora</title>
+
+    <link rel="stylesheet" href="../css/authors.css">
+    <script src="../JS/authors.js" defer></script>
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="../index.html" class="logo">Readora<span>.</span></a>
+
+        <nav class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="books.html">Books</a>
+            <a href="authors.html" class="active">Authors</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- AUTHOR LIST -->
+        <section id="authorListSection">
+
+            <div class="page-heading">
+                <span class="eyebrow">MEET THE CREATORS</span>
+                <h1>Discover Our <span>Authors</span></h1>
+                <p>Explore the writers behind the books you love.</p>
+            </div>
+
+            <div class="search-wrapper">
+                <span class="search-icon">⌕</span>
+                <input
+                    type="search"
+                    id="authorSearch"
+                    placeholder="Search authors by name..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="authors-grid" id="authorsGrid"></div>
+
+            <div class="empty-state" id="emptyState" hidden>
+                <div class="empty-icon">⌕</div>
+                <h3>No authors found</h3>
+                <p>Try searching with another name.</p>
+            </div>
+
+        </section>
+
+
+        <!-- AUTHOR PROFILE -->
+        <section id="authorProfileSection" hidden>
+
+            <button class="back-button" id="backToAuthors">
+                <span>←</span> Back to Authors
+            </button>
+
+            <div id="authorProfile"></div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Readora. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
