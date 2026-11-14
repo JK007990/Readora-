@@ -18,33 +18,87 @@ import { auth } from "./firebase-config.js";
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
-       MOBILE MENU
+       RESPONSIVE MOBILE MENU
     ===================================================== */
 
-    const menuToggle = document.querySelector(
-        "#mobileMenuBtn, .menu-toggle, .hamburger, #menu-toggle"
-    );
+    const menuToggle = document.getElementById("mobileMenuBtn");
+    const navLinks = document.getElementById("mainNav");
+    const menuIcon = menuToggle
+        ? menuToggle.querySelector("i")
+        : null;
 
-    const navLinks = document.querySelector(
-        "#mainNav, .nav-links, .navbar-nav, #nav-links"
-    );
+    function closeMobileMenu() {
+        if (!menuToggle || !navLinks) return;
+
+        navLinks.classList.remove("open");
+        menuToggle.classList.remove("active");
+
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open menu");
+
+        if (menuIcon) {
+            menuIcon.classList.remove("fa-xmark");
+            menuIcon.classList.add("fa-bars");
+        }
+    }
 
     if (menuToggle && navLinks) {
-        menuToggle.addEventListener("click", () => {
-            navLinks.classList.toggle("active");
 
-            const isOpen = navLinks.classList.contains("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-controls", "mainNav");
 
-            menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.addEventListener("click", event => {
+            event.stopPropagation();
+
+            const isOpen = navLinks.classList.toggle("open");
+
             menuToggle.classList.toggle("active", isOpen);
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
+            menuToggle.setAttribute(
+                "aria-label",
+                isOpen ? "Close menu" : "Open menu"
+            );
+
+            if (menuIcon) {
+                menuIcon.classList.toggle("fa-bars", !isOpen);
+                menuIcon.classList.toggle("fa-xmark", isOpen);
+            }
         });
 
+        // Close when clicking a navigation link
         navLinks.querySelectorAll("a").forEach(link => {
             link.addEventListener("click", () => {
-                navLinks.classList.remove("active");
-                menuToggle.classList.remove("active");
-                menuToggle.setAttribute("aria-expanded", "false");
+                closeMobileMenu();
             });
+        });
+
+        // Close when clicking outside
+        document.addEventListener("click", event => {
+            if (
+                !navLinks.contains(event.target) &&
+                !menuToggle.contains(event.target)
+            ) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close with Escape key
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                closeMobileMenu();
+            }
+        });
+
+        // Close when switching to desktop
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 850) {
+                closeMobileMenu();
+            }
         });
     }
 
@@ -54,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const searchForm = document.getElementById("searchForm");
+
     const searchInputs = document.querySelectorAll(
         "#searchInput, #search-input, .search-input, input[type='search']"
     );
@@ -66,10 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetSearch = document.getElementById("resetSearch");
 
     function searchBooks(keyword = "") {
+
         const query = keyword.trim().toLowerCase();
+
         let visibleCount = 0;
 
         bookCards.forEach(book => {
+
             const searchableText = [
                 book.textContent,
                 book.dataset.title || "",
@@ -92,28 +150,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     searchInputs.forEach(input => {
+
         input.addEventListener("input", () => {
+
             searchInputs.forEach(otherInput => {
+
                 if (otherInput !== input) {
                     otherInput.value = input.value;
                 }
+
             });
 
             searchBooks(input.value);
         });
+
     });
 
     if (searchForm) {
+
         searchForm.addEventListener("submit", event => {
+
             event.preventDefault();
 
             const input = document.getElementById("searchInput");
+
             searchBooks(input ? input.value : "");
         });
+
     }
 
     if (resetSearch) {
+
         resetSearch.addEventListener("click", () => {
+
             searchInputs.forEach(input => {
                 input.value = "";
             });
@@ -121,12 +190,16 @@ document.addEventListener("DOMContentLoaded", () => {
             searchBooks("");
 
             document.querySelectorAll(".filter-btn").forEach(button => {
+
                 button.classList.toggle(
                     "active",
                     button.dataset.filter === "all"
                 );
+
             });
+
         });
+
     }
 
 
@@ -139,10 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     function filterBooks(category = "all") {
+
         const selected = category.trim().toLowerCase();
+
         let visibleCount = 0;
 
         bookCards.forEach(book => {
+
             const bookCategory = (
                 book.dataset.category ||
                 book.dataset.genre ||
@@ -161,12 +237,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (noResults) {
-            noResults.classList.toggle("hidden", visibleCount > 0);
+            noResults.classList.toggle(
+                "hidden",
+                visibleCount > 0
+            );
         }
     }
 
     categoryButtons.forEach(button => {
+
         button.addEventListener("click", () => {
+
             const category =
                 button.dataset.filter ||
                 button.dataset.categoryFilter ||
@@ -181,10 +262,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             filterBooks(category);
         });
+
     });
 
     document.querySelectorAll("[data-category-filter]").forEach(card => {
+
         card.addEventListener("click", () => {
+
             const category = card.dataset.categoryFilter;
 
             if (!category) return;
@@ -198,7 +282,9 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 filterBooks(category);
             }
+
         });
+
     });
 
 
@@ -224,55 +310,72 @@ document.addEventListener("DOMContentLoaded", () => {
     const logoutBtn = document.getElementById("logoutBtn");
 
 
-function setAvatar(user) {
-    const displayName =
-        user.displayName ||
-        user.email?.split("@")[0] ||
-        "Reader";
+    /* =====================================================
+       SET USER AVATAR
+    ===================================================== */
 
-    const initial = displayName.charAt(0).toUpperCase();
-    const photoURL = user.photoURL || "";
+    function setAvatar(user) {
 
-    if (userDisplayName) {
-        userDisplayName.textContent = displayName;
-    }
+        const displayName =
+            user.displayName ||
+            user.email?.split("@")[0] ||
+            "Reader";
 
-    if (userEmail) {
-        userEmail.textContent = user.email || "";
-    }
+        const initial = displayName.charAt(0).toUpperCase();
 
-    function updateAvatar(image, fallback) {
-        if (!image || !fallback) return;
+        const photoURL = user.photoURL || "";
 
-        fallback.textContent = initial;
-
-        image.onload = () => {
-            image.style.display = "block";
-            fallback.style.display = "none";
-        };
-
-        image.onerror = () => {
-            image.style.display = "none";
-            fallback.style.display = "flex";
-        };
-
-        if (photoURL) {
-            image.src = photoURL;
-            image.alt = displayName;
-        } else {
-            image.removeAttribute("src");
-            image.style.display = "none";
-            fallback.style.display = "flex";
+        if (userDisplayName) {
+            userDisplayName.textContent = displayName;
         }
+
+        if (userEmail) {
+            userEmail.textContent = user.email || "";
+        }
+
+        function updateAvatar(image, fallback) {
+
+            if (!image || !fallback) return;
+
+            fallback.textContent = initial;
+
+            image.onload = () => {
+                image.style.display = "block";
+                fallback.style.display = "none";
+            };
+
+            image.onerror = () => {
+                image.style.display = "none";
+                fallback.style.display = "flex";
+            };
+
+            if (photoURL) {
+
+                image.src = photoURL;
+                image.alt = displayName;
+
+            } else {
+
+                image.removeAttribute("src");
+
+                image.style.display = "none";
+                fallback.style.display = "flex";
+            }
+        }
+
+        updateAvatar(headerAvatar, avatarFallback);
+        updateAvatar(menuAvatar, menuAvatarFallback);
     }
 
-    updateAvatar(headerAvatar, avatarFallback);
-    updateAvatar(menuAvatar, menuAvatarFallback);
-}
 
+    /* =====================================================
+       FIREBASE AUTH STATE
+    ===================================================== */
 
     onAuthStateChanged(auth, user => {
+
         if (user) {
+
             // Hide Login and Sign Up
             if (guestActions) {
                 guestActions.classList.add("hidden");
@@ -286,6 +389,7 @@ function setAvatar(user) {
             setAvatar(user);
 
         } else {
+
             // Show Login and Sign Up
             if (guestActions) {
                 guestActions.classList.remove("hidden");
@@ -305,6 +409,7 @@ function setAvatar(user) {
                 avatarBtn.setAttribute("aria-expanded", "false");
             }
         }
+
     });
 
 
@@ -313,12 +418,19 @@ function setAvatar(user) {
     ===================================================== */
 
     if (avatarBtn && profileMenu) {
+
         avatarBtn.addEventListener("click", event => {
+
             event.stopPropagation();
 
-            const isOpen = profileMenu.classList.toggle("hidden") === false;
+            const isOpen =
+                profileMenu.classList.toggle("hidden") === false;
 
-            avatarBtn.setAttribute("aria-expanded", String(isOpen));
+            avatarBtn.setAttribute(
+                "aria-expanded",
+                String(isOpen)
+            );
+
         });
 
         profileMenu.addEventListener("click", event => {
@@ -326,16 +438,24 @@ function setAvatar(user) {
         });
 
         document.addEventListener("click", () => {
+
             profileMenu.classList.add("hidden");
+
             avatarBtn.setAttribute("aria-expanded", "false");
+
         });
 
         document.addEventListener("keydown", event => {
+
             if (event.key === "Escape") {
+
                 profileMenu.classList.add("hidden");
+
                 avatarBtn.setAttribute("aria-expanded", "false");
             }
+
         });
+
     }
 
 
@@ -344,10 +464,13 @@ function setAvatar(user) {
     ===================================================== */
 
     if (logoutBtn) {
+
         logoutBtn.addEventListener("click", async () => {
+
             logoutBtn.disabled = true;
 
             try {
+
                 await signOut(auth);
 
                 if (profileMenu) {
@@ -358,13 +481,16 @@ function setAvatar(user) {
                 window.location.href = "index.html";
 
             } catch (error) {
+
                 console.error("Logout failed:", error);
 
                 alert("Unable to log out. Please try again.");
 
                 logoutBtn.disabled = false;
             }
+
         });
+
     }
 
 
@@ -377,7 +503,9 @@ function setAvatar(user) {
     );
 
     if (newsletterForm) {
+
         newsletterForm.addEventListener("submit", event => {
+
             event.preventDefault();
 
             const emailInput = newsletterForm.querySelector(
@@ -385,7 +513,9 @@ function setAvatar(user) {
             );
 
             if (!emailInput || !emailInput.value.trim()) {
+
                 alert("Please enter your email address.");
+
                 return;
             }
 
@@ -393,6 +523,7 @@ function setAvatar(user) {
 
             newsletterForm.reset();
         });
+
     }
 
 
@@ -405,7 +536,9 @@ function setAvatar(user) {
     );
 
     yearElements.forEach(element => {
+
         element.textContent = new Date().getFullYear();
+
     });
 
 
@@ -414,7 +547,9 @@ function setAvatar(user) {
     ===================================================== */
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
+
         link.addEventListener("click", event => {
+
             const targetId = link.getAttribute("href");
 
             if (!targetId || targetId === "#") return;
@@ -422,14 +557,18 @@ function setAvatar(user) {
             const target = document.querySelector(targetId);
 
             if (target) {
+
                 event.preventDefault();
 
                 target.scrollIntoView({
                     behavior: "smooth",
                     block: "start"
                 });
+
             }
+
         });
+
     });
 
 
@@ -442,25 +581,37 @@ function setAvatar(user) {
     );
 
     if ("IntersectionObserver" in window) {
+
         const observer = new IntersectionObserver(
             entries => {
+
                 entries.forEach(entry => {
+
                     if (entry.isIntersecting) {
+
                         entry.target.classList.add("visible");
+
                         observer.unobserve(entry.target);
                     }
+
                 });
+
             },
-            { threshold: 0.12 }
+            {
+                threshold: 0.12
+            }
         );
 
         revealElements.forEach(element => {
             observer.observe(element);
         });
+
     } else {
+
         revealElements.forEach(element => {
             element.classList.add("visible");
         });
+
     }
 
 
@@ -473,19 +624,25 @@ function setAvatar(user) {
     );
 
     if (backToTop) {
+
         backToTop.addEventListener("click", () => {
+
             window.scrollTo({
                 top: 0,
                 behavior: "smooth"
             });
+
         });
 
         window.addEventListener("scroll", () => {
+
             backToTop.classList.toggle(
                 "visible",
                 window.scrollY > 300
             );
+
         });
+
     }
 
 });
