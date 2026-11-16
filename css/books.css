@@ -32,7 +32,8 @@ a {
     text-decoration: none;
 }
 
-button {
+button,
+input {
     font: inherit;
 }
 
@@ -41,15 +42,13 @@ button {
     margin: 0 auto;
 }
 
-/* ==========================================
-   HEADER
-========================================== */
+/* HEADER */
 
 .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, .96);
     border-bottom: 1px solid #f2e9e1;
     backdrop-filter: blur(12px);
 }
@@ -99,10 +98,11 @@ button {
     color: #756a61;
     font-size: 13px;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: color .2s ease;
 }
 
-.main-nav a:hover {
+.main-nav a:hover,
+.main-nav a.active {
     color: var(--primary);
 }
 
@@ -116,7 +116,7 @@ button {
     background: white;
     font-size: 12px;
     font-weight: 700;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: .2s ease;
 }
 
 .back-home:hover {
@@ -125,9 +125,7 @@ button {
     border-color: var(--primary);
 }
 
-/* ==========================================
-   PAGE HERO
-========================================== */
+/* HERO */
 
 .books-hero {
     position: relative;
@@ -145,7 +143,7 @@ button {
     position: absolute;
     right: 7%;
     bottom: -48px;
-    color: rgba(244, 119, 33, 0.045);
+    color: rgba(244, 119, 33, .045);
     font-family: "Playfair Display", serif;
     font-size: clamp(100px, 17vw, 230px);
     font-weight: 700;
@@ -206,9 +204,7 @@ button {
     color: var(--primary);
 }
 
-/* ==========================================
-   BOOK SECTION
-========================================== */
+/* BOOK SECTION */
 
 .all-books-section {
     padding: 65px 0 90px;
@@ -249,9 +245,7 @@ button {
     font-size: 12px;
 }
 
-/* ==========================================
-   BOOK SEARCH
-========================================== */
+/* SEARCH */
 
 .book-search {
     display: flex;
@@ -265,16 +259,15 @@ button {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 12px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: .2s ease;
 }
 
 .book-search:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(244, 119, 33, 0.12);
+    box-shadow: 0 0 0 3px rgba(244, 119, 33, .12);
 }
 
 .book-search > i {
-    flex: 0 0 auto;
     color: var(--muted);
 }
 
@@ -285,7 +278,6 @@ button {
     outline: 0;
     background: transparent;
     color: var(--text);
-    font-family: inherit;
     font-size: 13px;
 }
 
@@ -295,18 +287,15 @@ button {
 
 .book-search button {
     display: none;
-    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     width: 28px;
     height: 28px;
-    padding: 0;
     border: 0;
     border-radius: 7px;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .book-search button.is-visible {
@@ -325,14 +314,11 @@ button {
     text-align: center;
 }
 
-.book-card[hidden],
-.no-books-message[hidden] {
+[hidden] {
     display: none !important;
 }
 
-/* ==========================================
-   CATEGORY CHIPS
-========================================== */
+/* CATEGORY */
 
 .category-list {
     display: flex;
@@ -349,7 +335,7 @@ button {
     border-radius: 30px;
     font-size: 12px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: .2s ease;
 }
 
 .category-chip:hover,
@@ -359,9 +345,7 @@ button {
     border-color: var(--primary);
 }
 
-/* ==========================================
-   BOOK GRID
-========================================== */
+/* BOOK GRID */
 
 .books-grid {
     display: grid;
@@ -376,12 +360,12 @@ button {
     background: white;
     border: 1px solid var(--border);
     border-radius: 16px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .book-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 14px 32px rgba(70, 44, 22, 0.08);
+    box-shadow: 0 14px 32px rgba(70, 44, 22, .08);
 }
 
 .book-cover {
@@ -390,7 +374,7 @@ button {
     overflow: hidden;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 0.88;
+    aspect-ratio: .88;
     border-radius: 10px;
     isolation: isolate;
 }
@@ -434,6 +418,8 @@ button {
 .book-badge.popular {
     background: #4f8060;
 }
+
+/* PLACEHOLDER COVERS */
 
 .cover-1 {
     color: #39261a;
@@ -522,9 +508,32 @@ button {
     background: #8a7164;
 }
 
-/* ==========================================
-   BOOK INFO
-========================================== */
+/* R2 COVER IMAGES */
+
+.book-cover.has-cover-image {
+    background: #f5eee8;
+}
+
+.book-cover-image {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.book-cover.has-cover-image .cover-content,
+.book-cover.has-cover-image .cover-circle,
+.book-cover.has-cover-image .cover-ring,
+.book-cover.has-cover-image .cover-sun,
+.book-cover.has-cover-image .cover-mountain {
+    display: none;
+}
+
+/* BOOK INFO */
 
 .book-info {
     padding: 15px 4px 5px;
@@ -577,10 +586,8 @@ button {
     height: 32px;
     color: var(--primary);
     background: #fff3e9;
-    border: 0;
     border-radius: 9px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: .2s ease;
 }
 
 .book-action:hover {
@@ -588,9 +595,7 @@ button {
     background: var(--primary);
 }
 
-/* ==========================================
-   FOOTER
-========================================== */
+/* FOOTER */
 
 .site-footer {
     display: flex;
@@ -624,11 +629,10 @@ button {
     font-size: 10px;
 }
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
+/* RESPONSIVE */
 
 @media (max-width: 1000px) {
+
     .main-nav {
         gap: 17px;
     }
@@ -636,6 +640,7 @@ button {
     .books-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+
 }
 
 @media (max-width: 700px) {
@@ -736,6 +741,7 @@ button {
         max-width: 100%;
         margin: 22px 0 18px;
     }
+
 }
 
 @media (max-width: 360px) {
@@ -757,4 +763,5 @@ button {
     .cover-content h3 {
         font-size: 16px;
     }
+
 }
