@@ -1,25 +1,17 @@
 
 /* =========================================
    READORA PROFILE PAGE
-   FIREBASE + SAVED BOOKS
+   FIREBASE AUTH + SAVED BOOKS
 ========================================= */
 
 import {
     onAuthStateChanged,
     updateProfile,
     updatePassword,
+    reauthenticateWithCredential,
+    EmailAuthProvider,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-storage.js";
-
-import { getApp } from
-    "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
 import { auth } from "./firebase-config.js";
 
@@ -44,25 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = $("#toast");
 
     let currentUser = null;
-    let storage = null;
-
-
-    /* =====================================
-       FIREBASE STORAGE
-    ===================================== */
-
-    try {
-        storage = getStorage(getApp());
-    } catch (error) {
-        console.error("Firebase Storage initialization:", error);
-    }
+    let toastTimer;
 
 
     /* =====================================
        TOAST
     ===================================== */
-
-    let toastTimer;
 
     function showToast(message) {
 
@@ -114,12 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+
     function closeModal() {
 
         modalOverlay.classList.remove("show");
         modalContent.innerHTML = "";
 
     }
+
 
     modalClose.addEventListener("click", closeModal);
 
@@ -130,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     });
+
 
     document.addEventListener("keydown", event => {
 
@@ -158,6 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         avatarPlaceholder.textContent =
             name.charAt(0).toUpperCase();
+
+        // Keep displaying an existing Firebase profile photo.
+        // Photo uploading has been removed.
 
         if (user.photoURL) {
 
@@ -223,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================
        EDIT PROFILE
+       NAME ONLY - NO PHOTO UPLOAD
     ===================================== */
 
     editProfileBtn.addEventListener("click", () => {
@@ -236,14 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <form id="editProfileForm">
 
-                <img
-                    id="uploadPreview"
-                    class="upload-preview"
-                    src="${escapeHTML(currentUser.photoURL || "")}"
-                    alt="Photo Preview"
-                    ${currentUser.photoURL ? "" : "hidden"}
-                >
-
                 <label>
                     Display Name
 
@@ -252,23 +230,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         id="editName"
                         value="${escapeHTML(currentUser.displayName || "")}"
                         maxlength="60"
+                        placeholder="Enter your name"
                         required
                     >
                 </label>
 
-                <label>
-                    Upload Profile Photo
-
-                    <input
-                        type="file"
-                        id="photoFile"
-                        accept="image/png,image/jpeg,image/webp"
-                    >
-                </label>
-
                 <p class="modal-description">
-                    Choose a JPG, PNG or WebP image.
-                    Maximum file size: 5 MB.
+                    Update the name displayed on your Readora profile.
                 </p>
 
                 <button
@@ -284,66 +252,11 @@ document.addEventListener("DOMContentLoaded", () => {
         `);
 
 
-        const photoInput = $("#photoFile");
-        const preview = $("#uploadPreview");
-
-        let selectedPhoto = null;
-
-
-        /* PHOTO PREVIEW */
-
-        photoInput.addEventListener("change", () => {
-
-            const file = photoInput.files[0];
-
-            if (!file) return;
-
-            const allowedTypes = [
-                "image/jpeg",
-                "image/png",
-                "image/webp"
-            ];
-
-            if (!allowedTypes.includes(file.type)) {
-
-                showToast("Please select JPG, PNG or WebP.");
-
-                photoInput.value = "";
-                return;
-
-            }
-
-            if (file.size > 5 * 1024 * 1024) {
-
-                showToast("Image must be smaller than 5 MB.");
-
-                photoInput.value = "";
-                return;
-
-            }
-
-            selectedPhoto = file;
-
-            const previewURL = URL.createObjectURL(file);
-
-            preview.src = previewURL;
-            preview.hidden = false;
-
-            preview.onload = () => {
-                URL.revokeObjectURL(previewURL);
-            };
-
-        });
-
-
-        /* SAVE PROFILE */
-
         $("#editProfileForm").addEventListener("submit", async event => {
 
             event.preventDefault();
 
             const button = $("#saveProfileBtn");
-
             const newName = $("#editName").value.trim();
 
             if (!newName) {
@@ -356,41 +269,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
 
-                let photoURL = currentUser.photoURL || null;
-
-
-                /* UPLOAD IMAGE TO FIREBASE STORAGE */
-
-                if (selectedPhoto) {
-
-                    if (!storage) {
-                        throw new Error(
-                            "Firebase Storage is not initialized."
-                        );
-                    }
-
-                    const fileExtension =
-                        selectedPhoto.name.split(".").pop();
-
-                    const photoRef = ref(
-                        storage,
-                        `profilePhotos/${currentUser.uid}/avatar.${fileExtension}`
-                    );
-
-                    await uploadBytes(photoRef, selectedPhoto, {
-                        contentType: selectedPhoto.type
-                    });
-
-                    photoURL = await getDownloadURL(photoRef);
-
-                }
-
-
-                /* UPDATE FIREBASE PROFILE */
-
                 await updateProfile(currentUser, {
-                    displayName: newName,
-                    photoURL: photoURL
+                    displayName: newName
                 });
 
                 updateUserInterface(currentUser);
@@ -473,9 +353,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 "readonly"
             );
 
-            const store = transaction.objectStore("savedBooks");
-
-            const request = store.getAll();
+            const request = transaction
+                .objectStore("savedBooks")
+                .getAll();
 
             request.onsuccess = () => {
 
@@ -542,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <p>Books you save will appear here.</p>
 
-                <a href="index.html">Explore Books</a>
+                <a href="books.html">Explore Books</a>
 
             </div>
 
@@ -590,9 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const title = book.title || "Untitled Book";
                 const author = book.author || "Unknown Author";
-
                 const cover = book.cover || "";
-
                 const readerUrl = book.readerUrl || "";
 
                 card.innerHTML = `
@@ -694,6 +572,386 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================
+       DEVICE INFORMATION
+    ===================================== */
+
+    function getDeviceInformation() {
+
+        const userAgent = navigator.userAgent || "";
+        const platform = navigator.userAgentData?.platform ||
+            navigator.platform ||
+            "Unknown";
+
+        let browser = "Unknown Browser";
+        let device = "Computer";
+
+        if (/Edg\//i.test(userAgent)) {
+            browser = "Microsoft Edge";
+        } else if (/OPR\//i.test(userAgent)) {
+            browser = "Opera";
+        } else if (/Chrome\//i.test(userAgent)) {
+            browser = "Google Chrome";
+        } else if (/Firefox\//i.test(userAgent)) {
+            browser = "Mozilla Firefox";
+        } else if (/Safari\//i.test(userAgent)) {
+            browser = "Safari";
+        }
+
+        if (/Android/i.test(userAgent)) {
+            device = "Android Device";
+        } else if (/iPhone/i.test(userAgent)) {
+            device = "iPhone";
+        } else if (/iPad/i.test(userAgent)) {
+            device = "iPad";
+        } else if (/Windows/i.test(userAgent)) {
+            device = "Windows Computer";
+        } else if (/Mac/i.test(userAgent)) {
+            device = "Mac Computer";
+        } else if (/Linux/i.test(userAgent)) {
+            device = "Linux Computer";
+        }
+
+        const loginDate =
+            currentUser?.metadata?.lastSignInTime
+                ? new Date(
+                    currentUser.metadata.lastSignInTime
+                ).toLocaleString()
+                : "Unavailable";
+
+        const accountCreated =
+            currentUser?.metadata?.creationTime
+                ? new Date(
+                    currentUser.metadata.creationTime
+                ).toLocaleDateString()
+                : "Unavailable";
+
+        return {
+            browser,
+            device,
+            platform,
+            language: navigator.language || "Unknown",
+            screen: `${window.screen.width} × ${window.screen.height}`,
+            timezone:
+                Intl.DateTimeFormat().resolvedOptions().timeZone ||
+                "Unknown",
+            loginDate,
+            accountCreated
+        };
+
+    }
+
+
+    function showDeviceInformation() {
+
+        const info = getDeviceInformation();
+
+        openModal("Manage Devices", `
+
+            <div class="device-status">
+                <span class="device-status-dot"></span>
+                Current device is active
+            </div>
+
+            <div class="device-details">
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Device</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.device)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Browser</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.browser)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Platform</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.platform)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Screen Size</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.screen)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Language</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.language)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Time Zone</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.timezone)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Last Sign In</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.loginDate)}
+                    </span>
+                </div>
+
+                <div class="device-detail-row">
+                    <span class="device-detail-label">Account Created</span>
+                    <span class="device-detail-value">
+                        ${escapeHTML(info.accountCreated)}
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="device-note">
+                <strong>About device management</strong><br>
+                This page displays information about the browser
+                currently signed in to Readora. It does not list
+                other devices or remotely terminate their sessions.
+            </div>
+
+        `);
+
+    }
+
+
+    /* =====================================
+       CHANGE PASSWORD
+       RE-AUTHENTICATION + FIREBASE
+    ===================================== */
+
+    function showChangePassword() {
+
+        if (!currentUser) {
+
+            showToast("Please sign in first.");
+            return;
+
+        }
+
+        const supportsPassword =
+            currentUser.providerData.some(
+                provider => provider.providerId === "password"
+            );
+
+        if (!supportsPassword || !currentUser.email) {
+
+            showToast(
+                "Password changes are unavailable for this sign-in method."
+            );
+
+            return;
+
+        }
+
+        openModal("Change Password", `
+
+            <form id="passwordForm">
+
+                <label>
+                    Current Password
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        autocomplete="current-password"
+                        placeholder="Enter current password"
+                        required
+                    >
+                </label>
+
+                <label>
+                    New Password
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Enter new password"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Confirm New Password
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        minlength="8"
+                        autocomplete="new-password"
+                        placeholder="Confirm new password"
+                        required
+                    >
+                </label>
+
+                <p class="modal-description">
+                    Your new password must contain at least 8 characters.
+                </p>
+
+                <button
+                    class="modal-action"
+                    id="changePasswordBtn"
+                    type="submit"
+                >
+                    Update Password
+                </button>
+
+            </form>
+
+        `);
+
+
+        $("#passwordForm").addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+                const button = $("#changePasswordBtn");
+
+                const currentPassword =
+                    $("#currentPassword").value;
+
+                const newPassword =
+                    $("#newPassword").value;
+
+                const confirmPassword =
+                    $("#confirmPassword").value;
+
+
+                if (!currentPassword || !newPassword || !confirmPassword) {
+
+                    showToast("Please complete all password fields.");
+                    return;
+
+                }
+
+                if (newPassword.length < 8) {
+
+                    showToast(
+                        "New password must be at least 8 characters."
+                    );
+
+                    return;
+
+                }
+
+                if (newPassword !== confirmPassword) {
+
+                    showToast("New passwords do not match.");
+                    return;
+
+                }
+
+                if (currentPassword === newPassword) {
+
+                    showToast(
+                        "New password must be different from current password."
+                    );
+
+                    return;
+
+                }
+
+
+                button.disabled = true;
+                button.textContent = "Updating...";
+
+                try {
+
+                    // 1. Verify current password with Firebase.
+
+                    const credential =
+                        EmailAuthProvider.credential(
+                            currentUser.email,
+                            currentPassword
+                        );
+
+                    await reauthenticateWithCredential(
+                        currentUser,
+                        credential
+                    );
+
+
+                    // 2. Update password in Firebase Authentication.
+
+                    await updatePassword(
+                        currentUser,
+                        newPassword
+                    );
+
+
+                    closeModal();
+
+                    showToast(
+                        "Password changed successfully!"
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Change password error:",
+                        error
+                    );
+
+                    let message =
+                        "Unable to change password. Please try again.";
+
+                    if (
+                        error.code === "auth/invalid-credential" ||
+                        error.code === "auth/wrong-password" ||
+                        error.code === "auth/invalid-login-credentials"
+                    ) {
+
+                        message = "Your current password is incorrect.";
+
+                    } else if (
+                        error.code === "auth/weak-password"
+                    ) {
+
+                        message = "Please choose a stronger password.";
+
+                    } else if (
+                        error.code === "auth/too-many-requests"
+                    ) {
+
+                        message =
+                            "Too many attempts. Please try again later.";
+
+                    } else if (
+                        error.code === "auth/requires-recent-login"
+                    ) {
+
+                        message =
+                            "Please sign in again before changing your password.";
+
+                    }
+
+                    showToast(message);
+
+                    button.disabled = false;
+                    button.textContent = "Update Password";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================
        SETTINGS
     ===================================== */
 
@@ -705,189 +963,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch (type) {
 
-                case "security":
-
-                    openModal("Application Security", `
-
-                        <p class="modal-description">
-                            Your account is protected by Firebase Authentication.
-                            Keep your login credentials private.
-                        </p>
-
-                        <div class="device-box">
-
-                            <strong>Account Email</strong><br>
-                            ${escapeHTML(currentUser?.email || "Not signed in")}
-
-                            <br><br>
-
-                            <strong>Email Verified</strong><br>
-                            ${currentUser?.emailVerified ? "Yes" : "No"}
-
-                        </div>
-
-                    `);
-
-                    break;
-
-
                 case "devices":
-
-                    openModal("Manage Devices", `
-
-                        <div class="device-box">
-
-                            <strong>Current Device</strong><br>
-
-                            ${escapeHTML(navigator.userAgent)}
-
-                            <br><br>
-
-                            <strong>Status:</strong>
-                            <span style="color:#16a34a">Active</span>
-
-                        </div>
-
-                        <p class="modal-description">
-                            This is the current browser information.
-                            Full device session management requires
-                            a separate backend implementation.
-                        </p>
-
-                    `);
-
+                    showDeviceInformation();
                     break;
-
 
                 case "password":
-
-                    if (!currentUser) {
-
-                        showToast("Please sign in first.");
-                        return;
-
-                    }
-
-                    const supportsPassword =
-                        currentUser.providerData.some(
-                            provider => provider.providerId === "password"
-                        );
-
-                    if (!supportsPassword) {
-
-                        showToast(
-                            "Password changes are unavailable for this sign-in method."
-                        );
-
-                        return;
-
-                    }
-
-                    openModal("Change Password", `
-
-                        <form id="passwordForm">
-
-                            <label>
-                                New Password
-
-                                <input
-                                    type="password"
-                                    id="newPassword"
-                                    minlength="8"
-                                    autocomplete="new-password"
-                                    placeholder="Enter new password"
-                                    required
-                                >
-                            </label>
-
-                            <label>
-                                Confirm Password
-
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    minlength="8"
-                                    autocomplete="new-password"
-                                    placeholder="Confirm new password"
-                                    required
-                                >
-                            </label>
-
-                            <button class="modal-action" type="submit">
-                                Update Password
-                            </button>
-
-                        </form>
-
-                    `);
-
-
-                    $("#passwordForm").addEventListener(
-                        "submit",
-                        async event => {
-
-                            event.preventDefault();
-
-                            const password = $("#newPassword").value;
-                            const confirm = $("#confirmPassword").value;
-
-                            if (password.length < 8) {
-
-                                showToast(
-                                    "Password must be at least 8 characters."
-                                );
-
-                                return;
-
-                            }
-
-                            if (password !== confirm) {
-
-                                showToast("Passwords do not match.");
-                                return;
-
-                            }
-
-                            try {
-
-                                await updatePassword(
-                                    currentUser,
-                                    password
-                                );
-
-                                closeModal();
-
-                                showToast(
-                                    "Password updated successfully!"
-                                );
-
-                            } catch (error) {
-
-                                console.error(error);
-
-                                if (
-                                    error.code ===
-                                    "auth/requires-recent-login"
-                                ) {
-
-                                    showToast(
-                                        "Please sign in again before changing your password."
-                                    );
-
-                                } else {
-
-                                    showToast(
-                                        error.message ||
-                                        "Password update failed."
-                                    );
-
-                                }
-
-                            }
-
-                        }
-                    );
-
+                    showChangePassword();
                     break;
 
             }
