@@ -1,669 +1,200 @@
-/* =====================================================
-   READORA - ONLINE BOOK READER
-   Book Selection | Chapters | Dark Mode | Progress
-===================================================== */
+
+"use strict";
+
+/* =========================================
+   READORA - MINIMAL BOOK READER
+   PDF.js + EPUB.js
+========================================= */
 
 
-/* ==================== BOOK DATABASE ==================== */
+/* =========================================
+   BOOK DATABASE
+
+   fileType: "pdf" or "epub"
+   fileUrl: PDF / EPUB file URL
+========================================= */
 
 const books = {
+
     "atomic-habits": {
         title: "Atomic Habits",
         author: "James Clear",
-        description:
-            "Explore small habits, consistency, and practical ways to improve your daily routines.",
-        chapters: [
-            {
-                title: "Introduction to Better Habits",
-                content: `
-                    <p>
-                        Small actions repeated consistently can help
-                        create meaningful changes in everyday life.
-                        Progress often begins with one manageable step.
-                    </p>
-                    <h3>The Power of Small Steps</h3>
-                    <p>
-                        Choose one simple action you can practice today.
-                        It could be reading for a few minutes, organizing
-                        your workspace, or preparing for tomorrow.
-                    </p>
-                    <p>
-                        Build a routine that is realistic enough to repeat.
-                        Consistency makes it easier to continue working
-                        toward your goals.
-                    </p>
-                `
-            },
-            {
-                title: "Building a Consistent Routine",
-                content: `
-                    <p>
-                        A useful routine starts with a clear action
-                        and a practical plan.
-                    </p>
-                    <h3>Make the First Step Simple</h3>
-                    <p>
-                        Prepare your reading materials in advance,
-                        reduce distractions, and choose a time that
-                        fits your daily schedule.
-                    </p>
-                    <p>
-                        Review your routine regularly and adjust it
-                        to make it easier to maintain.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "psychology-of-money": {
         title: "The Psychology of Money",
         author: "Morgan Housel",
-        description:
-            "Explore how behavior, patience, and personal decisions influence financial outcomes.",
-        chapters: [
-            {
-                title: "Money and Human Behavior",
-                content: `
-                    <p>
-                        Financial decisions involve more than numbers.
-                        Our experiences, emotions, and expectations
-                        can influence how we manage money.
-                    </p>
-                    <h3>Different Experiences, Different Decisions</h3>
-                    <p>
-                        People may interpret the same financial situation
-                        differently because their circumstances and
-                        experiences are different.
-                    </p>
-                    <p>
-                        Understanding your own assumptions can help
-                        you make more thoughtful financial decisions.
-                    </p>
-                `
-            },
-            {
-                title: "Patience and Long-Term Thinking",
-                content: `
-                    <p>
-                        Long-term goals often require patience and
-                        consistent decisions over time.
-                    </p>
-                    <h3>Define Your Priorities</h3>
-                    <p>
-                        Consider what financial security means to you.
-                        A clear understanding of your priorities can
-                        help guide your decisions.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "dopamine-nation": {
         title: "Dopamine Nation",
         author: "Anna Lembke",
-        description:
-            "Reflect on pleasure, distractions, and everyday habits.",
-        chapters: [
-            {
-                title: "Understanding Everyday Habits",
-                content: `
-                    <p>
-                        Modern life offers many opportunities for
-                        entertainment and immediate rewards.
-                    </p>
-                    <h3>Notice Your Patterns</h3>
-                    <p>
-                        Pay attention to when you reach for your phone
-                        or another distraction automatically.
-                    </p>
-                    <p>
-                        Becoming aware of these patterns can help
-                        you make more intentional choices.
-                    </p>
-                `
-            },
-            {
-                title: "Making Time for Focus",
-                content: `
-                    <p>
-                        Create space for activities that require
-                        concentration and patience.
-                    </p>
-                    <p>
-                        Consider setting aside uninterrupted time
-                        for reading, learning, exercise, or meaningful
-                        conversations.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "the-mountain-is-you": {
         title: "The Mountain Is You",
         author: "Brianna Wiest",
-        description:
-            "Reflect on personal growth, recurring patterns, and creating positive change.",
-        chapters: [
-            {
-                title: "Understanding Personal Patterns",
-                content: `
-                    <p>
-                        Change can be difficult even when we want
-                        a different outcome.
-                    </p>
-                    <h3>Begin with Awareness</h3>
-                    <p>
-                        Identify a recurring situation that leaves
-                        you feeling stuck. Think about the choices
-                        and routines that may contribute to it.
-                    </p>
-                `
-            },
-            {
-                title: "Taking the Next Step",
-                content: `
-                    <p>
-                        Personal growth does not require solving
-                        every challenge at once.
-                    </p>
-                    <p>
-                        Focus on one manageable action, learn from
-                        setbacks, and keep your expectations realistic.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "think-and-grow-rich": {
         title: "Think and Grow Rich",
         author: "Napoleon Hill",
-        description:
-            "Explore goal setting, planning, persistence, and personal ambition.",
-        chapters: [
-            {
-                title: "Defining a Clear Goal",
-                content: `
-                    <p>
-                        A clear goal gives your efforts direction.
-                        Specific goals are easier to turn into
-                        practical daily actions.
-                    </p>
-                    <h3>Turn Intentions into a Plan</h3>
-                    <p>
-                        Write down what you want to achieve and
-                        identify one action you can take this week.
-                    </p>
-                `
-            },
-            {
-                title: "Persistence and Learning",
-                content: `
-                    <p>
-                        Progress rarely follows a perfectly straight
-                        line. Challenges can show which parts of
-                        a plan need improvement.
-                    </p>
-                    <p>
-                        Seek useful feedback, review your approach,
-                        and continue learning.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "rich-dad-poor-dad": {
         title: "Rich Dad Poor Dad",
         author: "Robert T. Kiyosaki",
-        description:
-            "Explore financial education, money habits, and informed decision-making.",
-        chapters: [
-            {
-                title: "Learning About Money",
-                content: `
-                    <p>
-                        Financial education involves understanding
-                        income, spending, saving, debt, and planning.
-                    </p>
-                    <h3>Understand Your Cash Flow</h3>
-                    <p>
-                        Record the money that comes in and the money
-                        that goes out. This overview can help you
-                        understand your spending habits.
-                    </p>
-                `
-            },
-            {
-                title: "Making Informed Decisions",
-                content: `
-                    <p>
-                        Before making a financial decision, consider
-                        the costs, risks, and possible outcomes.
-                    </p>
-                    <p>
-                        Build your knowledge gradually and remember
-                        that financial results depend on individual
-                        circumstances.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "the-alchemist": {
         title: "The Alchemist",
         author: "Paulo Coelho",
-        description:
-            "Reflect on dreams, courage, self-discovery, and the journey toward a meaningful life.",
-        chapters: [
-            {
-                title: "Dreams and Possibilities",
-                content: `
-                    <p>
-                        Dreams can encourage us to explore possibilities
-                        beyond familiar routines.
-                    </p>
-                    <h3>The Value of the Journey</h3>
-                    <p>
-                        Working toward a meaningful goal can teach
-                        us about patience, courage, and ourselves.
-                    </p>
-                `
-            },
-            {
-                title: "Courage to Keep Exploring",
-                content: `
-                    <p>
-                        New experiences often involve uncertainty.
-                        Learning, preparing, and remaining open to
-                        new information can help us navigate change.
-                    </p>
-                    <p>
-                        The process of pursuing a goal may also
-                        change what we value.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     },
 
     "ikigai": {
         title: "Ikigai",
         author: "Héctor García and Francesc Miralles",
-        description:
-            "Reflect on purpose, everyday meaning, community, and a balanced life.",
-        chapters: [
-            {
-                title: "Finding Meaning in Everyday Life",
-                content: `
-                    <p>
-                        Meaning can come from relationships, useful
-                        work, creative interests, and everyday activities.
-                    </p>
-                    <h3>Notice What Gives You Energy</h3>
-                    <p>
-                        Think about activities that help you feel
-                        engaged and connected to the world around you.
-                    </p>
-                `
-            },
-            {
-                title: "Building a Balanced Routine",
-                content: `
-                    <p>
-                        A sustainable routine leaves room for work,
-                        rest, relationships, and personal interests.
-                    </p>
-                    <p>
-                        Start with one realistic improvement and
-                        build on it over time.
-                    </p>
-                `
-            }
-        ]
+        fileType: "pdf",
+        fileUrl: "",
+        cover: ""
     }
+
 };
 
 
-/* ==================== SELECT ELEMENTS ==================== */
+/* =========================================
+   HTML ELEMENTS
+========================================= */
 
 const $ = (id) => document.getElementById(id);
 
-const readerTitle = $("reader-title");
-const readerAuthor = $("reader-author");
-const readerDescription = $("reader-description");
-const readerCover = $("reader-cover");
+const loadingMessage = $("loading-message");
 
-const chapterTitle = $("chapter-title");
-const chapterLabel = $("chapter-label");
-const readerContent = $("reader-content");
 const readerNotice = $("reader-notice");
+const noticeText = $("notice-text");
 
-const fontSizeLabel = $("font-size-label");
+const pdfContainer = $("pdf-container");
+const pdfCanvas = $("pdf-canvas");
+
+const epubContainer = $("epub-container");
+const epubViewer = $("epub-viewer");
+
+const previousButton = $("bottom-previous");
+const nextButton = $("bottom-next");
+
+const pageIndicator = $("page-indicator");
 
 const progressBar = $("progress-bar");
 const progressPercentage = $("progress-percentage");
 const progressTrack = $("progress-track");
 
-const previousButton = $("previous-chapter");
-const nextButton = $("next-chapter");
-const bottomPreviousButton = $("bottom-previous");
-const bottomNextButton = $("bottom-next");
-
 const themeToggle = $("theme-toggle");
 
 
-/* ==================== SELECT BOOK ==================== */
+/* =========================================
+   BOOK SELECTION
+========================================= */
 
 const params = new URLSearchParams(window.location.search);
+
 const bookId = params.get("id") || "atomic-habits";
+
 const book = books[bookId];
 
 const storageKey = `readora-progress-${bookId}`;
 
-let currentChapter = 0;
-let fontSize = 18;
+
+/* =========================================
+   READER VARIABLES
+========================================= */
+
+let currentPage = 1;
+let totalPages = 0;
+
+let currentFormat = "";
+
+let pdfDocument = null;
+let pdfRenderTask = null;
+
+let epubBook = null;
+let epubRendition = null;
+
+let isRendering = false;
+
+let resizeTimer = null;
 
 
-/* ==================== BOOK INFORMATION ==================== */
+/* =========================================
+   INITIAL UI
+========================================= */
 
-function renderBookInfo() {
-    if (!book) {
-        document.title = "Book Not Found | Readora";
-
-        readerTitle.textContent = "Book Not Found";
-        readerAuthor.textContent = "Readora";
-        readerDescription.textContent =
-            "Please return to the books page and select an available book.";
-
-        readerCover.src =
-            "https://placehold.co/180x260/fff0e6/f47721?text=Not+Found";
-
-        readerCover.alt = "Book not found";
-
-        chapterTitle.textContent = "Book unavailable";
-        chapterLabel.textContent = "NOT FOUND";
-
-        readerContent.replaceChildren();
-
-        readerNotice.hidden = false;
-        readerNotice.textContent =
-            "This book is not available in the reader yet.";
-
-        disableChapterButtons(true);
-
-        return false;
-    }
-
-    document.title = `${book.title} | Readora`;
-
-    readerTitle.textContent = book.title;
-    readerAuthor.textContent = book.author;
-    readerDescription.textContent = book.description;
-
-    readerCover.src =
-        `https://placehold.co/180x260/fff0e6/f47721?text=${encodeURIComponent(book.title)}`;
-
-    readerCover.alt = `${book.title} book cover`;
-
-    return true;
+function showLoading(show) {
+    loadingMessage.hidden = !show;
 }
 
-
-/* ==================== CHAPTER BUTTONS ==================== */
-
-function disableChapterButtons(disabled) {
-    [
-        previousButton,
-        nextButton,
-        bottomPreviousButton,
-        bottomNextButton
-    ].forEach((button) => {
-        if (button) button.disabled = disabled;
-    });
+function hideAllReaderContent() {
+    pdfContainer.hidden = true;
+    epubContainer.hidden = true;
 }
 
+function showNotice(message) {
+    showLoading(false);
 
-function updateChapterButtons() {
-    previousButton.disabled = currentChapter === 0;
-    bottomPreviousButton.disabled = currentChapter === 0;
+    hideAllReaderContent();
 
-    nextButton.disabled =
-        currentChapter >= book.chapters.length - 1;
+    readerNotice.hidden = false;
+    noticeText.textContent = message;
 
-    bottomNextButton.disabled =
-        currentChapter >= book.chapters.length - 1;
+    totalPages = 0;
+    currentPage = 0;
+
+    updatePageControls();
 }
 
-
-/* ==================== SAVE PROGRESS ==================== */
-
-function getSavedProgress() {
-    try {
-        const saved = JSON.parse(localStorage.getItem(storageKey));
-
-        if (
-            saved &&
-            Number.isInteger(saved.chapter) &&
-            saved.chapter >= 0 &&
-            saved.chapter < book.chapters.length
-        ) {
-            return saved;
-        }
-    } catch (error) {
-        console.warn("Could not load reading progress.", error);
-    }
-
-    return {
-        chapter: 0,
-        scroll: 0
-    };
-}
-
-
-function saveProgress() {
-    if (!book) return;
-
-    try {
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify({
-                chapter: currentChapter,
-                scroll: window.scrollY
-            })
-        );
-    } catch (error) {
-        console.warn("Could not save reading progress.", error);
-    }
-}
-
-
-/* ==================== RENDER CHAPTER ==================== */
-
-function renderChapter(scrollToTop = false) {
-    if (!book) return;
-
-    const chapter = book.chapters[currentChapter];
-
-    if (!chapter) return;
-
-    chapterTitle.textContent = chapter.title;
-
-    chapterLabel.textContent =
-        `CHAPTER ${currentChapter + 1} OF ${book.chapters.length}`;
-
-    readerContent.innerHTML = chapter.content;
-
+function hideNotice() {
     readerNotice.hidden = true;
-
-    updateChapterButtons();
-    updateProgress();
-    saveProgress();
-
-    if (scrollToTop) {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
 }
 
 
-function goToChapter(index) {
-    if (!book) return;
-
-    if (index < 0 || index >= book.chapters.length) return;
-
-    currentChapter = index;
-    renderChapter(true);
-}
-
-
-/* ==================== CHAPTER EVENTS ==================== */
-
-previousButton.addEventListener("click", () => {
-    goToChapter(currentChapter - 1);
-});
-
-bottomPreviousButton.addEventListener("click", () => {
-    goToChapter(currentChapter - 1);
-});
-
-nextButton.addEventListener("click", () => {
-    goToChapter(currentChapter + 1);
-});
-
-bottomNextButton.addEventListener("click", () => {
-    goToChapter(currentChapter + 1);
-});
-
-
-/* ==================== FONT SIZE ==================== */
-
-function updateFontSize() {
-    readerContent.style.fontSize = `${fontSize}px`;
-    fontSizeLabel.textContent = `${fontSize}px`;
-
-    try {
-        localStorage.setItem(
-            "readora-font-size",
-            String(fontSize)
-        );
-    } catch (error) {
-        console.warn("Could not save font size.", error);
-    }
-}
-
-
-$("increase-font").addEventListener("click", () => {
-    if (fontSize < 30) {
-        fontSize++;
-        updateFontSize();
-    }
-});
-
-
-$("decrease-font").addEventListener("click", () => {
-    if (fontSize > 12) {
-        fontSize--;
-        updateFontSize();
-    }
-});
-
-
-try {
-    const savedFontSize = Number(
-        localStorage.getItem("readora-font-size")
-    );
-
-    if (
-        Number.isFinite(savedFontSize) &&
-        savedFontSize >= 12 &&
-        savedFontSize <= 30
-    ) {
-        fontSize = savedFontSize;
-    }
-} catch (error) {
-    console.warn("Could not load font size.", error);
-}
-
-updateFontSize();
-
-
-/* ==================== DARK MODE ==================== */
-
-const themeKey = "readora-reading-theme";
-
-
-function applyTheme(isDark) {
-    document.body.classList.toggle("dark-reading", isDark);
-
-    const icon = themeToggle.querySelector("i");
-
-    if (icon) {
-        icon.className = isDark
-            ? "fa-solid fa-sun"
-            : "fa-solid fa-moon";
-    }
-
-    themeToggle.setAttribute(
-        "aria-label",
-        isDark
-            ? "Switch to light reading theme"
-            : "Switch to dark reading theme"
-    );
-
-    try {
-        localStorage.setItem(
-            themeKey,
-            isDark ? "dark" : "light"
-        );
-    } catch (error) {
-        console.warn("Could not save theme.", error);
-    }
-}
-
-
-let darkMode = false;
-
-try {
-    darkMode = localStorage.getItem(themeKey) === "dark";
-} catch (error) {
-    console.warn("Could not load theme.", error);
-}
-
-applyTheme(darkMode);
-
-themeToggle.addEventListener("click", () => {
-    darkMode =
-        !document.body.classList.contains("dark-reading");
-
-    applyTheme(darkMode);
-});
-
-
-/* ==================== READING PROGRESS ==================== */
+/* =========================================
+   READING PROGRESS
+========================================= */
 
 function updateProgress() {
-    if (!book) return;
-
-    const documentHeight =
-        document.documentElement.scrollHeight -
-        window.innerHeight;
 
     let percentage = 0;
 
-    if (documentHeight > 0) {
+    if (totalPages > 0) {
         percentage = Math.round(
-            (window.scrollY / documentHeight) * 100
+            (currentPage / totalPages) * 100
         );
     }
 
-    percentage = Math.max(0, Math.min(100, percentage));
+    percentage = Math.max(
+        0,
+        Math.min(100, percentage)
+    );
 
     progressBar.style.width = `${percentage}%`;
 
@@ -676,68 +207,580 @@ function updateProgress() {
 }
 
 
-let scrollScheduled = false;
+/* =========================================
+   PAGE CONTROLS
+========================================= */
 
-window.addEventListener(
-    "scroll",
-    () => {
-        if (scrollScheduled) return;
+function updatePageControls() {
 
-        scrollScheduled = true;
+    const hasPages = totalPages > 0;
 
-        requestAnimationFrame(() => {
-            updateProgress();
-            saveProgress();
-            scrollScheduled = false;
+    previousButton.disabled =
+        !hasPages || currentPage <= 1;
+
+    nextButton.disabled =
+        !hasPages || currentPage >= totalPages;
+
+    pageIndicator.textContent = hasPages
+        ? `${currentPage} / ${totalPages}`
+        : "0 / 0";
+
+    updateProgress();
+
+    if (hasPages) {
+        saveProgress();
+    }
+}
+
+
+/* =========================================
+   SAVE / RESTORE PROGRESS
+========================================= */
+
+function loadProgress() {
+
+    try {
+        const saved = JSON.parse(
+            localStorage.getItem(storageKey)
+        );
+
+        if (
+            saved &&
+            Number.isInteger(saved.page) &&
+            saved.page > 0
+        ) {
+            return saved.page;
+        }
+
+    } catch (error) {
+        console.warn(
+            "Could not load reading progress:",
+            error
+        );
+    }
+
+    return 1;
+}
+
+
+function saveProgress() {
+
+    if (totalPages <= 0 || currentPage <= 0) {
+        return;
+    }
+
+    try {
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+                page: currentPage,
+                updatedAt: Date.now()
+            })
+        );
+
+    } catch (error) {
+        console.warn(
+            "Could not save reading progress:",
+            error
+        );
+    }
+}
+
+
+/* =========================================
+   PDF READER
+========================================= */
+
+async function loadPDF(url) {
+
+    if (!window.pdfjsLib) {
+        throw new Error(
+            "PDF.js library could not be loaded."
+        );
+    }
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+    pdfDocument = await pdfjsLib.getDocument({
+        url: url
+    }).promise;
+
+    totalPages = pdfDocument.numPages;
+
+    if (!totalPages) {
+        throw new Error("This PDF has no pages.");
+    }
+
+    currentFormat = "pdf";
+
+    currentPage = Math.min(
+        Math.max(loadProgress(), 1),
+        totalPages
+    );
+
+    hideNotice();
+
+    pdfContainer.hidden = false;
+
+    await renderPDFPage(currentPage);
+}
+
+
+async function renderPDFPage(pageNumber) {
+
+    if (!pdfDocument || isRendering) {
+        return;
+    }
+
+    if (
+        pageNumber < 1 ||
+        pageNumber > totalPages
+    ) {
+        return;
+    }
+
+    isRendering = true;
+
+    showLoading(true);
+    hideNotice();
+
+    try {
+
+        const page = await pdfDocument.getPage(pageNumber);
+
+        const originalViewport = page.getViewport({
+            scale: 1
         });
+
+        const availableWidth = Math.max(
+            250,
+            pdfContainer.clientWidth || 800
+        );
+
+        const scale = Math.min(
+            1.6,
+            availableWidth / originalViewport.width
+        );
+
+        const viewport = page.getViewport({
+            scale: scale
+        });
+
+        const pixelRatio = Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+        const context = pdfCanvas.getContext("2d");
+
+        pdfCanvas.width =
+            Math.floor(viewport.width * pixelRatio);
+
+        pdfCanvas.height =
+            Math.floor(viewport.height * pixelRatio);
+
+        pdfCanvas.style.width =
+            `${Math.floor(viewport.width)}px`;
+
+        pdfCanvas.style.height =
+            `${Math.floor(viewport.height)}px`;
+
+        context.setTransform(
+            pixelRatio,
+            0,
+            0,
+            pixelRatio,
+            0,
+            0
+        );
+
+        pdfRenderTask = page.render({
+            canvasContext: context,
+            viewport: viewport
+        });
+
+        await pdfRenderTask.promise;
+
+        currentPage = pageNumber;
+
+        updatePageControls();
+
+    } catch (error) {
+
+        console.error("PDF rendering error:", error);
+
+        if (error.name !== "RenderingCancelledException") {
+            showNotice(
+                "Unable to display this PDF page. Please check the PDF file."
+            );
+        }
+
+    } finally {
+
+        isRendering = false;
+        pdfRenderTask = null;
+
+        showLoading(false);
+    }
+}
+
+
+/* =========================================
+   EPUB READER
+========================================= */
+
+async function loadEPUB(url) {
+
+    if (typeof window.ePub !== "function") {
+        throw new Error(
+            "EPUB.js library could not be loaded."
+        );
+    }
+
+    epubBook = window.ePub(url);
+
+    epubContainer.hidden = false;
+
+    epubRendition = epubBook.renderTo(
+        epubViewer,
+        {
+            width: "100%",
+            height: "100%",
+            spread: "none",
+            flow: "paginated"
+        }
+    );
+
+    await epubBook.ready;
+
+    await epubBook.locations.generate(1000);
+
+    totalPages = epubBook.locations.total;
+
+    if (!totalPages || totalPages < 1) {
+        totalPages = 1;
+    }
+
+    currentFormat = "epub";
+
+    const savedPage = Math.min(
+        Math.max(loadProgress(), 1),
+        totalPages
+    );
+
+    const percentage = totalPages > 1
+        ? (savedPage - 1) / (totalPages - 1)
+        : 0;
+
+    const savedLocation =
+        epubBook.locations.cfiFromPercentage(percentage);
+
+    epubRendition.on("relocated", (location) => {
+
+        const position =
+            location.start.percentage || 0;
+
+        currentPage = Math.min(
+            totalPages,
+            Math.max(
+                1,
+                Math.floor(position * totalPages) + 1
+            )
+        );
+
+        showLoading(false);
+
+        updatePageControls();
+    });
+
+    await epubRendition.display(savedLocation);
+
+    showLoading(false);
+}
+
+
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+async function nextPage() {
+
+    if (currentPage >= totalPages) {
+        return;
+    }
+
+    if (currentFormat === "pdf") {
+        await renderPDFPage(currentPage + 1);
+        return;
+    }
+
+    if (currentFormat === "epub" && epubRendition) {
+        await epubRendition.next();
+    }
+}
+
+
+async function previousPage() {
+
+    if (currentPage <= 1) {
+        return;
+    }
+
+    if (currentFormat === "pdf") {
+        await renderPDFPage(currentPage - 1);
+        return;
+    }
+
+    if (currentFormat === "epub" && epubRendition) {
+        await epubRendition.prev();
+    }
+}
+
+
+/* =========================================
+   BUTTON EVENTS
+========================================= */
+
+previousButton.addEventListener(
+    "click",
+    previousPage
+);
+
+nextButton.addEventListener(
+    "click",
+    nextPage
+);
+
+
+/* =========================================
+   KEYBOARD NAVIGATION
+========================================= */
+
+document.addEventListener("keydown", (event) => {
+
+    if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target.isContentEditable
+    ) {
+        return;
+    }
+
+    if (event.key === "ArrowRight") {
+        nextPage();
+    }
+
+    if (event.key === "ArrowLeft") {
+        previousPage();
+    }
+
+});
+
+
+/* =========================================
+   MOBILE SWIPE
+========================================= */
+
+const readingArea = document.querySelector(
+    ".reading-area"
+);
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+readingArea.addEventListener(
+    "touchstart",
+    (event) => {
+
+        touchStartX = event.changedTouches[0].screenX;
+        touchStartY = event.changedTouches[0].screenY;
+
     },
     { passive: true }
 );
 
-window.addEventListener("resize", updateProgress);
+
+readingArea.addEventListener(
+    "touchend",
+    (event) => {
+
+        const endX = event.changedTouches[0].screenX;
+        const endY = event.changedTouches[0].screenY;
+
+        const differenceX = endX - touchStartX;
+        const differenceY = endY - touchStartY;
+
+        if (Math.abs(differenceX) < 60) {
+            return;
+        }
+
+        if (
+            Math.abs(differenceX) <
+            Math.abs(differenceY)
+        ) {
+            return;
+        }
+
+        if (differenceX < 0) {
+            nextPage();
+        } else {
+            previousPage();
+        }
+
+    },
+    { passive: true }
+);
 
 
-/* ==================== RESTORE READING POSITION ==================== */
+/* =========================================
+   DARK / LIGHT THEME
+========================================= */
 
-function restoreProgress() {
-    if (!book) return;
+const themeKey = "readora-reading-theme";
 
-    const saved = getSavedProgress();
+function applyTheme(isDark) {
 
-    currentChapter = saved.chapter;
+    document.body.classList.toggle(
+        "dark-reading",
+        isDark
+    );
 
-    renderChapter(false);
+    const icon = themeToggle.querySelector("i");
 
-    requestAnimationFrame(() => {
-        const maxScroll = Math.max(
-            0,
-            document.documentElement.scrollHeight -
-                window.innerHeight
+    if (icon) {
+        icon.className = isDark
+            ? "fa-solid fa-sun"
+            : "fa-solid fa-moon";
+    }
+
+    themeToggle.setAttribute(
+        "aria-label",
+        isDark
+            ? "Switch to light theme"
+            : "Switch to dark theme"
+    );
+
+    try {
+        localStorage.setItem(
+            themeKey,
+            isDark ? "dark" : "light"
+        );
+    } catch (error) {
+        console.warn("Could not save theme:", error);
+    }
+}
+
+
+let darkMode = false;
+
+try {
+    darkMode =
+        localStorage.getItem(themeKey) === "dark";
+} catch (error) {
+    console.warn("Could not load theme:", error);
+}
+
+applyTheme(darkMode);
+
+
+themeToggle.addEventListener("click", () => {
+
+    darkMode =
+        !document.body.classList.contains("dark-reading");
+
+    applyTheme(darkMode);
+
+});
+
+
+/* =========================================
+   PDF RESIZE
+========================================= */
+
+window.addEventListener("resize", () => {
+
+    if (currentFormat !== "pdf" || !pdfDocument) {
+        return;
+    }
+
+    if (resizeTimer) {
+        clearTimeout(resizeTimer);
+    }
+
+    resizeTimer = setTimeout(() => {
+
+        renderPDFPage(currentPage);
+
+    }, 250);
+
+});
+
+
+/* =========================================
+   INITIALIZE READER
+========================================= */
+
+async function initializeReader() {
+
+    $("current-year").textContent =
+        new Date().getFullYear();
+
+    if (!book) {
+
+        showNotice(
+            "This book could not be found. Please return to the books page."
         );
 
-        const position = Math.max(
-            0,
-            Math.min(Number(saved.scroll) || 0, maxScroll)
+        return;
+    }
+
+    if (!book.fileUrl) {
+
+        showNotice(
+            "This book file has not been added yet."
         );
 
-        window.scrollTo(0, position);
+        return;
+    }
 
-        updateProgress();
-    });
+    showLoading(true);
+
+    try {
+
+        const format = book.fileType.toLowerCase();
+
+        if (format === "pdf") {
+
+            await loadPDF(book.fileUrl);
+
+        } else if (format === "epub") {
+
+            await loadEPUB(book.fileUrl);
+
+        } else {
+
+            throw new Error(
+                "Unsupported book format. Use PDF or EPUB."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Reader initialization error:",
+            error
+        );
+
+        showNotice(
+            "Unable to open this book. Please check the file URL, file format, and file access permissions."
+        );
+
+    }
+
 }
 
 
-/* ==================== FOOTER YEAR ==================== */
-
-const yearElement = $("current-year");
-
-if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-}
-
-
-/* ==================== INITIALIZE READER ==================== */
-
-if (renderBookInfo()) {
-    restoreProgress();
-}
+/* START */
+initializeReader();
