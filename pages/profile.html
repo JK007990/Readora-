@@ -24,10 +24,8 @@
         </div>
     </header>
 
-
     <div class="profile-layout">
 
-        <!-- LEFT COLUMN -->
         <div class="profile-main-column">
 
             <section class="user-card">
@@ -56,8 +54,6 @@
 
             </section>
 
-
-            <!-- SAVED BOOKS -->
             <section class="saved-section">
 
                 <div class="section-heading">
@@ -74,7 +70,7 @@
                         <span class="empty-icon">📚</span>
                         <h3>No saved books yet</h3>
                         <p>Books you save will appear here.</p>
-                        <a href="index.html">Explore Books</a>
+                        <a href="books.html">Explore Books</a>
                     </div>
                 </div>
 
@@ -82,37 +78,17 @@
 
         </div>
 
-
-        <!-- RIGHT COLUMN -->
         <aside class="profile-side-column">
 
             <div class="settings-heading">
                 <h2>Account Settings</h2>
-                <p>Security and account management</p>
+                <p>Manage your account and devices</p>
             </div>
 
             <div class="settings-group">
 
-                <button class="setting-item" data-setting="security">
-                    <span class="setting-icon">
-                        <svg viewBox="0 0 24 24">
-                            <rect x="5" y="3" width="14" height="18" rx="2"/>
-                            <path d="M9 7h6M9 17h6"/>
-                        </svg>
-                    </span>
-
-                    <span class="setting-info">
-                        <strong>Application Security</strong>
-                        <small>Account protection</small>
-                    </span>
-
-                    <svg class="chevron" viewBox="0 0 24 24">
-                        <path d="m9 18 6-6-6-6"/>
-                    </svg>
-                </button>
-
-
                 <button class="setting-item" data-setting="devices">
+
                     <span class="setting-icon">
                         <svg viewBox="0 0 24 24">
                             <rect x="7" y="2" width="10" height="20" rx="2"/>
@@ -122,16 +98,17 @@
 
                     <span class="setting-info">
                         <strong>Manage Devices</strong>
-                        <small>Current device information</small>
+                        <small>View your current device information</small>
                     </span>
 
                     <svg class="chevron" viewBox="0 0 24 24">
                         <path d="m9 18 6-6-6-6"/>
                     </svg>
+
                 </button>
 
-
                 <button class="setting-item" data-setting="password">
+
                     <span class="setting-icon">
                         <svg viewBox="0 0 24 24">
                             <path d="M12 2 3 6v6c0 5 4 8 9 10 5-2 9-5 9-10V6Z"/>
@@ -141,16 +118,16 @@
 
                     <span class="setting-info">
                         <strong>Change Password</strong>
-                        <small>Update your password</small>
+                        <small>Update your account password</small>
                     </span>
 
                     <svg class="chevron" viewBox="0 0 24 24">
                         <path d="m9 18 6-6-6-6"/>
                     </svg>
+
                 </button>
 
             </div>
-
 
             <button class="logout-btn" id="logoutBtn">
                 <svg viewBox="0 0 24 24">
@@ -169,8 +146,6 @@
 
 </main>
 
-
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
 
     <div class="modal-card">
@@ -189,10 +164,7 @@
 
 </div>
 
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
-
 
 <script type="module" src="../JS/profile.js"></script>
 
