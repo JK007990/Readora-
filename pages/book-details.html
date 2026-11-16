@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,173 +10,282 @@
 
     <link rel="stylesheet" href="../css/book-details.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <script type="module" src="../JS/book-details.js"></script>
 </head>
 
 <body>
 
 <header class="site-header">
-    <a href="../index.html" class="logo">Readora<span>.</span></a>
 
-    <nav class="header-nav">
-        <a href="books.html">Books</a>
-        <a href="profile.html">Profile</a>
-    </nav>
+    <div class="nav-container">
 
-    <a href="books.html" class="back-button">
-        ← <span>Browse Books</span>
-    </a>
-</header>
+        <a href="../index.html" class="brand">
+            <span class="brand-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </span>
+            <span>Readora<span class="brand-dot">.</span></span>
+        </a>
 
-<main class="page-container">
+        <nav class="main-nav">
+            <a href="../index.html">Home</a>
+            <a href="books.html">Books</a>
+            <a href="../index.html#about">About</a>
+        </nav>
 
-    <div class="breadcrumb">
-        <a href="../index.html">Home</a>
-        <span>/</span>
-        <a href="books.html">Books</a>
-        <span>/</span>
-        <span id="breadcrumb-title">Book Details</span>
+        <a href="books.html" class="back-home">
+            <i class="fa-solid fa-arrow-left"></i>
+            All Books
+        </a>
+
     </div>
 
-    <section class="book-details">
+</header>
 
-        <div class="book-cover-container">
-            <div class="book-cover" id="book-cover">
-                <span>📚</span>
-            </div>
+
+<main class="details-main">
+
+    <div class="container">
+
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="books.html">Books</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span id="breadcrumb-title">Book Details</span>
         </div>
 
-        <div class="book-information">
 
-            <span class="book-category" id="book-category">
-                Category
-            </span>
+        <!-- BOOK DETAILS -->
 
-            <h1 id="book-title">Book Title</h1>
+        <section class="details-layout" id="bookDetails">
 
-            <p class="book-author">
-                by <span id="book-author">Author</span>
-            </p>
+            <div class="cover-column">
 
-            <div class="rating-summary">
-                <div class="average-stars" id="average-stars">
-                    ☆☆☆☆☆
+                <div class="book-cover" id="book-cover">
+                    <span>📚</span>
                 </div>
 
-                <strong id="average-rating">0.0</strong>
+                <button class="save-book-btn" id="saveBookBtn" type="button">
 
-                <span id="rating-count">(0 ratings)</span>
-            </div>
+                    <i class="fa-regular fa-bookmark"></i>
 
-            <p class="book-short-description" id="book-short-description"></p>
+                    <span>Save to My Books</span>
 
-            <div class="book-metadata">
-                <div>
-                    <span>Category</span>
-                    <strong id="meta-category">-</strong>
-                </div>
-
-                <div>
-                    <span>Author</span>
-                    <strong id="meta-author">-</strong>
-                </div>
-            </div>
-
-            <div class="book-actions">
-                <button id="save-book-button" class="save-button">
-                    ♡ Save Book
                 </button>
 
-                <a href="reader.html" id="read-now-button" class="read-button">
-                    Read Now →
-                </a>
+                <p class="save-message" id="saveMessage" aria-live="polite"></p>
+
             </div>
 
-            <p id="save-message" class="status-message"></p>
 
-        </div>
+            <div class="details-content">
 
-    </section>
+                <span class="details-category" id="book-category">
+                    Category
+                </span>
 
-    <!-- BOOK SUMMARY -->
+                <h1 id="book-title">Loading Book...</h1>
 
-    <section class="book-summary-section">
-        <div class="section-heading">
-            <span>ABOUT THIS BOOK</span>
-            <h2>Book Summary</h2>
-        </div>
-
-        <p id="book-description">
-            Loading book description...
-        </p>
-    </section>
-
-    <!-- RATING SECTION -->
-
-    <section class="rating-section">
-
-        <div class="section-heading">
-            <span>YOUR OPINION MATTERS</span>
-            <h2>Rate This Book</h2>
-            <p>Share your experience with other readers.</p>
-        </div>
-
-        <div class="rating-card">
-
-            <div id="rating-login-required" class="rating-login">
-
-                <div class="rating-lock">🔒</div>
-
-                <h3>Login Required</h3>
-
-                <p>
-                    You need to sign in to your account
-                    before rating this book.
+                <p class="book-author">
+                    By <span id="book-author">Loading...</span>
                 </p>
 
-                <a href="login.html" class="rating-login-button">
-                    Sign In
-                </a>
 
-            </div>
+                <div class="rating-summary">
 
-            <div id="rating-form" class="rating-form" hidden>
+                    <div class="rating-stars" id="averageStars">
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
 
-                <h3 id="rating-form-title">How would you rate this book?</h3>
+                    <strong id="averageRating">0.0</strong>
 
-                <div class="rating-stars-input" id="user-rating-stars">
-
-                    <button type="button" data-rating="1" aria-label="1 star">★</button>
-                    <button type="button" data-rating="2" aria-label="2 stars">★</button>
-                    <button type="button" data-rating="3" aria-label="3 stars">★</button>
-                    <button type="button" data-rating="4" aria-label="4 stars">★</button>
-                    <button type="button" data-rating="5" aria-label="5 stars">★</button>
+                    <span id="ratingCount">(0 ratings)</span>
 
                 </div>
 
-                <p id="selected-rating-text">
-                    Select your rating
-                </p>
 
-                <button type="button" id="submit-rating-button" disabled>
-                    Submit Rating
-                </button>
+                <div class="details-divider"></div>
 
-                <p id="rating-message" class="status-message"></p>
+
+                <div class="description-section">
+
+                    <h2>About This Book</h2>
+
+                    <p id="book-description">
+                        Loading book description...
+                    </p>
+
+                </div>
+
+
+                <div class="details-actions">
+
+                    <a href="#" id="readBookBtn" class="primary-btn">
+
+                        <i class="fa-solid fa-book-open"></i>
+
+                        Read Book
+
+                    </a>
+
+                    <button class="secondary-btn" id="shareBookBtn" type="button">
+
+                        <i class="fa-solid fa-share-nodes"></i>
+
+                        Share
+
+                    </button>
+
+                </div>
+
+
+                <div class="book-meta">
+
+                    <div class="meta-item">
+                        <i class="fa-solid fa-user-pen"></i>
+                        <div>
+                            <span>Author</span>
+                            <strong id="meta-author">-</strong>
+                        </div>
+                    </div>
+
+                    <div class="meta-item">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <div>
+                            <span>Category</span>
+                            <strong id="meta-category">-</strong>
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+
+        <!-- RATING SECTION -->
+
+        <section class="rating-section">
+
+            <div class="rating-heading">
+                <span class="section-label">YOUR OPINION MATTERS</span>
+                <h2>Rate This Book<span>.</span></h2>
+                <p>Share your thoughts and help other readers discover great books.</p>
+            </div>
+
+
+            <div class="rating-card">
+
+                <div id="ratingLoginMessage" class="rating-login-message" hidden>
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <span>
+                        Please log in to your account to rate this book.
+                    </span>
+
+                </div>
+
+
+                <div id="ratingForm">
+
+                    <p class="rating-question">How would you rate this book?</p>
+
+                    <div class="star-picker" id="starPicker">
+
+                        <button type="button" data-rating="1" aria-label="1 star">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+
+                        <button type="button" data-rating="2" aria-label="2 stars">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+
+                        <button type="button" data-rating="3" aria-label="3 stars">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+
+                        <button type="button" data-rating="4" aria-label="4 stars">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+
+                        <button type="button" data-rating="5" aria-label="5 stars">
+                            <i class="fa-regular fa-star"></i>
+                        </button>
+
+                    </div>
+
+                    <p class="rating-hint" id="ratingHint">
+                        Select your rating
+                    </p>
+
+                    <button class="submit-rating-btn" id="submitRatingBtn" type="button" disabled>
+                        Submit Rating
+                    </button>
+
+                    <p class="rating-feedback" id="ratingFeedback" aria-live="polite"></p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- NOT FOUND -->
+
+        <section class="not-found" id="bookNotFound" hidden>
+
+            <div class="not-found-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <h2>Book Not Found</h2>
+
+            <p>Sorry, we couldn't find the book you're looking for.</p>
+
+            <a href="books.html" class="primary-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Browse All Books
+            </a>
+
+        </section>
+
+    </div>
 
 </main>
 
+
 <footer class="site-footer">
-    <p>© 2026 Readora. All rights reserved.</p>
+
+    <a href="../index.html" class="brand footer-brand">
+        <span class="brand-icon">
+            <i class="fa-solid fa-book-open"></i>
+        </span>
+        <span>Readora<span class="brand-dot">.</span></span>
+    </a>
+
+    <p>Discover your next favorite book.</p>
+
+    <span class="copyright">
+        © 2026 Readora. All rights reserved.
+    </span>
+
 </footer>
 
-    <script type="module" src="../JS/book-details.js"></script>
-    
 </body>
 </html>
