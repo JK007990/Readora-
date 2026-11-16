@@ -1,517 +1,126 @@
+
+/* ==========================================
+   READORA - BOOK DETAILS
+   FIREBASE RATING + INDEXEDDB SAVED BOOKS
+========================================== */
+
 "use strict";
 
-import { auth, db, authPersistence } from "./firebase-config.js";
+import { auth, db } from "./firebase-config.js";
 
 import {
     onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
     collection,
     doc,
-    getDoc,
     getDocs,
     setDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { books } from "./book.js";
 
 
-/* =========================================
-   BOOK DATABASE
-========================================= */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
-const books = {
+const bookCover = document.getElementById("book-cover");
 
-    "atomic-habits": {
-        title: "Atomic Habits",
-        author: "James Clear",
-        category: "Self Improvement",
-        cover: "cover-1",
-        description: "An easy and practical guide to building good habits, breaking bad ones, and making small changes that lead to remarkable results."
-    },
+const bookTitle = document.getElementById("book-title");
 
-    "psychology-of-money": {
-        title: "The Psychology of Money",
-        author: "Morgan Housel",
-        category: "Finance",
-        cover: "cover-2",
-        description: "A collection of stories exploring how people think about money, wealth, greed, and happiness."
-    },
+const bookAuthor = document.getElementById("book-author");
 
-    "dopamine-nation": {
-        title: "Dopamine Nation",
-        author: "Anna Lembke",
-        category: "Psychology",
-        cover: "cover-3",
-        description: "Explores the relationship between pleasure and pain in a world overflowing with addictive stimulation."
-    },
+const bookCategory = document.getElementById("book-category");
 
-    "the-mountain-is-you": {
-        title: "The Mountain Is You",
-        author: "Brianna Wiest",
-        category: "Self Improvement",
-        cover: "cover-4",
-        description: "A guide to understanding self-sabotage and transforming the obstacles within yourself into opportunities for growth."
-    },
+const bookDescription = document.getElementById("book-description");
 
-    "think-and-grow-rich": {
-        title: "Think and Grow Rich",
-        author: "Napoleon Hill",
-        category: "Finance",
-        cover: "cover-5",
-        description: "A classic personal development book about mindset, determination, and principles associated with achieving success."
-    },
+const breadcrumbTitle = document.getElementById("breadcrumb-title");
 
-    "rich-dad-poor-dad": {
-        title: "Rich Dad Poor Dad",
-        author: "Robert T. Kiyosaki",
-        category: "Finance",
-        cover: "cover-6",
-        description: "Introduces financial literacy and different ways of thinking about money, investing, and building wealth."
-    },
+const metaAuthor = document.getElementById("meta-author");
 
-    "the-alchemist": {
-        title: "The Alchemist",
-        author: "Paulo Coelho",
-        category: "Fiction",
-        cover: "cover-7",
-        description: "A young shepherd travels in search of treasure and discovers lessons about dreams, destiny, and following his heart."
-    },
+const metaCategory = document.getElementById("meta-category");
 
-    "ikigai": {
-        title: "Ikigai",
-        author: "Héctor García and Francesc Miralles",
-        category: "Lifestyle",
-        cover: "cover-8",
-        description: "Explores the Japanese concept of ikigai and how purpose, meaningful work, and daily habits can contribute to a fulfilling life."
-    }
+const averageStars = document.getElementById("averageStars");
 
-};
+const averageRating = document.getElementById("averageRating");
+
+const ratingCount = document.getElementById("ratingCount");
+
+const starPicker = document.getElementById("starPicker");
+
+const ratingHint = document.getElementById("ratingHint");
+
+const submitRatingBtn = document.getElementById("submitRatingBtn");
+
+const ratingFeedback = document.getElementById("ratingFeedback");
+
+const ratingForm = document.getElementById("ratingForm");
+
+const ratingLoginMessage = document.getElementById("ratingLoginMessage");
+
+const saveBookBtn = document.getElementById("saveBookBtn");
+
+const saveMessage = document.getElementById("saveMessage");
+
+const readBookBtn = document.getElementById("readBookBtn");
+
+const shareBookBtn = document.getElementById("shareBookBtn");
+
+const bookDetails = document.getElementById("bookDetails");
+
+const bookNotFound = document.getElementById("bookNotFound");
 
 
-/* =========================================
-   DOM ELEMENTS
-========================================= */
-
-const $ = (id) => document.getElementById(id);
-
-const bookTitle = $("book-title");
-const bookAuthor = $("book-author");
-const bookCategory = $("book-category");
-const bookDescription = $("book-description");
-const bookShortDescription = $("book-short-description");
-
-const bookCover = $("book-cover");
-const breadcrumbTitle = $("breadcrumb-title");
-
-const metaCategory = $("meta-category");
-const metaAuthor = $("meta-author");
-
-const averageStars = $("average-stars");
-const averageRating = $("average-rating");
-const ratingCount = $("rating-count");
-
-const loginRequired = $("rating-login-required");
-const ratingForm = $("rating-form");
-
-const ratingButtons = document.querySelectorAll(
-    "#user-rating-stars button"
-);
-
-const selectedRatingText = $("selected-rating-text");
-const submitRatingButton = $("submit-rating-button");
-const ratingMessage = $("rating-message");
-
-const saveBookButton = $("save-book-button");
-const saveMessage = $("save-message");
-const readNowButton = $("read-now-button");
-
-
-/* =========================================
+/* ==========================================
    CURRENT BOOK
-========================================= */
+========================================== */
 
 const params = new URLSearchParams(window.location.search);
+
 const bookId = params.get("id");
 
 const book = books[bookId];
 
 let currentUser = null;
+
 let selectedRating = 0;
-let existingRating = 0;
 
+let userRating = 0;
 
-/* =========================================
-   LOAD BOOK DETAILS
-========================================= */
 
-function loadBookDetails() {
+/* ==========================================
+   INDEXEDDB SAVED BOOKS
+========================================== */
 
-    if (!book) {
+const DB_NAME = "ReadoraSavedBooks";
 
-        document.querySelector(".page-container").innerHTML = `
-            <div class="not-found">
-                <h2>Book Not Found</h2>
-                <p>The book you are looking for does not exist.</p>
-                <a href="books.html">Browse Books</a>
-            </div>
-        `;
+const DB_VERSION = 1;
 
-        return false;
-    }
-
-    document.title = `${book.title} | Readora`;
-
-    bookTitle.textContent = book.title;
-    bookAuthor.textContent = book.author;
-    bookCategory.textContent = book.category;
-
-    bookDescription.textContent = book.description;
-    bookShortDescription.textContent = book.description;
-
-    breadcrumbTitle.textContent = book.title;
-
-    metaCategory.textContent = book.category;
-    metaAuthor.textContent = book.author;
-
-    bookCover.className = `book-cover ${book.cover}`;
-
-    bookCover.innerHTML = `
-        <span>📖</span>
-    `;
-
-    readNowButton.href = `reader.html?id=${encodeURIComponent(bookId)}`;
-
-    return true;
-}
-
-
-/* =========================================
-   FIRESTORE REFERENCES
-========================================= */
-
-function getRatingRef(userId) {
-
-    return doc(
-        db,
-        "bookRatings",
-        `${bookId}_${userId}`
-    );
-
-}
-
-
-/* =========================================
-   LOAD ALL RATINGS
-========================================= */
-
-async function loadBookRatings() {
-
-    try {
-
-        const ratingsRef = collection(db, "bookRatings");
-
-        const snapshot = await getDocs(ratingsRef);
-
-        const bookRatings = [];
-
-        snapshot.forEach((ratingDoc) => {
-
-            const data = ratingDoc.data();
-
-            if (
-                data.bookId === bookId &&
-                Number.isInteger(data.rating) &&
-                data.rating >= 1 &&
-                data.rating <= 5
-            ) {
-
-                bookRatings.push(data.rating);
-
-            }
-
-        });
-
-        const count = bookRatings.length;
-
-        const average = count
-            ? bookRatings.reduce((total, value) => total + value, 0) / count
-            : 0;
-
-        averageRating.textContent = average.toFixed(1);
-
-        ratingCount.textContent =
-            `(${count} ${count === 1 ? "rating" : "ratings"})`;
-
-        const rounded = Math.round(average);
-
-        averageStars.textContent =
-            "★".repeat(rounded) + "☆".repeat(5 - rounded);
-
-    } catch (error) {
-
-        console.error("Loading ratings failed:", error);
-
-        averageRating.textContent = "--";
-        ratingCount.textContent = "(Unable to load ratings)";
-
-    }
-
-}
-
-
-/* =========================================
-   STAR INPUT
-========================================= */
-
-function updateStarSelection(rating) {
-
-    selectedRating = rating;
-
-    ratingButtons.forEach((button) => {
-
-        const value = Number(button.dataset.rating);
-
-        button.classList.toggle(
-            "active",
-            value <= rating
-        );
-
-    });
-
-    selectedRatingText.textContent =
-        rating > 0
-            ? `${rating} out of 5 stars`
-            : "Select your rating";
-
-    submitRatingButton.disabled = rating === 0;
-
-}
-
-
-/* =========================================
-   STAR CLICK
-========================================= */
-
-ratingButtons.forEach((button) => {
-
-    button.addEventListener("click", () => {
-
-        if (!currentUser) return;
-
-        updateStarSelection(
-            Number(button.dataset.rating)
-        );
-
-    });
-
-});
-
-
-/* =========================================
-   LOAD USER RATING
-========================================= */
-
-async function loadUserRating() {
-
-    if (!currentUser) return;
-
-    try {
-
-        const ratingRef = getRatingRef(currentUser.uid);
-
-        const ratingSnapshot = await getDoc(ratingRef);
-
-        if (ratingSnapshot.exists()) {
-
-            const data = ratingSnapshot.data();
-
-            existingRating = data.rating;
-
-            updateStarSelection(existingRating);
-
-            $("rating-form-title").textContent =
-                "Update Your Rating";
-
-            submitRatingButton.textContent =
-                "Update Rating";
-
-        } else {
-
-            existingRating = 0;
-
-            updateStarSelection(0);
-
-            $("rating-form-title").textContent =
-                "How would you rate this book?";
-
-            submitRatingButton.textContent =
-                "Submit Rating";
-
-        }
-
-    } catch (error) {
-
-        console.error("Loading user rating failed:", error);
-
-        ratingMessage.textContent =
-            "Unable to load your rating.";
-
-    }
-
-}
-
-
-/* =========================================
-   SUBMIT / UPDATE RATING
-========================================= */
-
-async function submitRating() {
-
-    if (!currentUser) {
-
-        ratingMessage.textContent =
-            "Please sign in before rating.";
-
-        return;
-    }
-
-    if (selectedRating < 1 || selectedRating > 5) {
-
-        ratingMessage.textContent =
-            "Please select a star rating.";
-
-        return;
-    }
-
-    submitRatingButton.disabled = true;
-
-    ratingMessage.textContent = "Saving your rating...";
-
-    try {
-
-        const ratingRef = getRatingRef(currentUser.uid);
-
-        await setDoc(ratingRef, {
-
-            bookId: bookId,
-
-            userId: currentUser.uid,
-
-            rating: selectedRating,
-
-            updatedAt: serverTimestamp()
-
-        });
-
-        existingRating = selectedRating;
-
-        ratingMessage.textContent =
-            "Your rating has been saved successfully!";
-
-        $("rating-form-title").textContent =
-            "Update Your Rating";
-
-        submitRatingButton.textContent =
-            "Update Rating";
-
-        await loadBookRatings();
-
-    } catch (error) {
-
-        console.error("Rating submission failed:", error);
-
-        ratingMessage.textContent =
-            "Unable to save rating. Please try again.";
-
-    } finally {
-
-        submitRatingButton.disabled = false;
-
-    }
-
-}
-
-submitRatingButton.addEventListener(
-    "click",
-    submitRating
-);
-
-
-/* =========================================
-   AUTHENTICATION STATE
-========================================= */
-
-async function initializeRating(user) {
-
-    currentUser = user;
-
-    if (user) {
-
-        loginRequired.hidden = true;
-        ratingForm.hidden = false;
-
-        ratingMessage.textContent = "";
-
-        await loadUserRating();
-
-    } else {
-
-        loginRequired.hidden = false;
-        ratingForm.hidden = true;
-
-        selectedRating = 0;
-        existingRating = 0;
-
-    }
-
-}
-
-
-/* =========================================
-   AUTH PERSISTENCE & AUTH STATE
-========================================= */
-
-async function initializePage() {
-
-    try {
-
-        await authPersistence;
-
-        onAuthStateChanged(auth, async (user) => {
-
-            await initializeRating(user);
-
-        });
-
-    } catch (error) {
-
-        console.error("Authentication initialization failed:", error);
-
-        loginRequired.hidden = false;
-        ratingForm.hidden = true;
-
-    }
-
-}
-
-
-/* =========================================
-   SAVED BOOKS - INDEXEDDB
-========================================= */
-
-const DB_NAME = "ReadoraDatabase";
 const STORE_NAME = "savedBooks";
+
+let savedDB = null;
+
 
 function openSavedDatabase() {
 
     return new Promise((resolve, reject) => {
 
-        const request = indexedDB.open(DB_NAME, 1);
+        if (!("indexedDB" in window)) {
 
-        request.onupgradeneeded = () => {
+            reject(new Error("IndexedDB is not supported."));
 
-            const database = request.result;
+            return;
+
+        }
+
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (event) => {
+
+            const database = event.target.result;
 
             if (!database.objectStoreNames.contains(STORE_NAME)) {
 
@@ -523,151 +132,451 @@ function openSavedDatabase() {
 
         };
 
-        request.onsuccess = () => resolve(request.result);
+        request.onsuccess = () => {
 
-        request.onerror = () => reject(request.error);
+            savedDB = request.result;
+
+            resolve(savedDB);
+
+        };
+
+        request.onerror = () => {
+
+            reject(request.error);
+
+        };
 
     });
 
 }
 
 
-async function getSavedBook() {
-
-    const database = await openSavedDatabase();
+function getSavedBooks() {
 
     return new Promise((resolve, reject) => {
 
-        const transaction = database.transaction(
+        if (!savedDB) {
+
+            reject(new Error("Saved book database is not ready."));
+
+            return;
+
+        }
+
+        const transaction = savedDB.transaction(
             STORE_NAME,
             "readonly"
         );
 
         const request = transaction
             .objectStore(STORE_NAME)
-            .get(bookId);
+            .getAll();
 
-        request.onsuccess = () => resolve(request.result);
+        request.onsuccess = () => {
 
-        request.onerror = () => reject(request.error);
+            resolve(request.result || []);
+
+        };
+
+        request.onerror = () => {
+
+            reject(request.error);
+
+        };
 
     });
 
 }
 
 
-async function saveBook() {
-
-    const database = await openSavedDatabase();
-
-    const savedBook = {
-
-        id: bookId,
-
-        title: book.title,
-
-        author: book.author,
-
-        category: book.category,
-
-        description: book.description,
-
-        cover: book.cover,
-
-        readerUrl: `reader.html?id=${encodeURIComponent(bookId)}`,
-
-        savedAt: Date.now()
-
-    };
+function saveBookToDatabase(bookData) {
 
     return new Promise((resolve, reject) => {
 
-        const transaction = database.transaction(
-            STORE_NAME,
-            "readwrite"
-        );
+        if (!savedDB) {
 
-        transaction.objectStore(STORE_NAME).put(savedBook);
+            reject(new Error("Saved book database is not ready."));
 
-        transaction.oncomplete = () => resolve(true);
-
-        transaction.onerror = () => reject(transaction.error);
-
-    });
-
-}
-
-
-async function removeSavedBook() {
-
-    const database = await openSavedDatabase();
-
-    return new Promise((resolve, reject) => {
-
-        const transaction = database.transaction(
-            STORE_NAME,
-            "readwrite"
-        );
-
-        transaction.objectStore(STORE_NAME).delete(bookId);
-
-        transaction.oncomplete = () => resolve(true);
-
-        transaction.onerror = () => reject(transaction.error);
-
-    });
-
-}
-
-
-async function updateSaveButton() {
-
-    try {
-
-        const saved = await getSavedBook();
-
-        if (saved) {
-
-            saveBookButton.textContent = "♥ Saved";
-
-            saveBookButton.classList.add("saved");
-
-        } else {
-
-            saveBookButton.textContent = "♡ Save Book";
-
-            saveBookButton.classList.remove("saved");
+            return;
 
         }
 
-    } catch (error) {
+        const transaction = savedDB.transaction(
+            STORE_NAME,
+            "readwrite"
+        );
 
-        console.error("Checking saved book failed:", error);
+        const request = transaction
+            .objectStore(STORE_NAME)
+            .put(bookData);
+
+        request.onsuccess = () => {
+
+            resolve(true);
+
+        };
+
+        request.onerror = () => {
+
+            reject(request.error);
+
+        };
+
+    });
+
+}
+
+
+function removeBookFromDatabase(id) {
+
+    return new Promise((resolve, reject) => {
+
+        if (!savedDB) {
+
+            reject(new Error("Saved book database is not ready."));
+
+            return;
+
+        }
+
+        const transaction = savedDB.transaction(
+            STORE_NAME,
+            "readwrite"
+        );
+
+        const request = transaction
+            .objectStore(STORE_NAME)
+            .delete(id);
+
+        request.onsuccess = () => {
+
+            resolve(true);
+
+        };
+
+        request.onerror = () => {
+
+            reject(request.error);
+
+        };
+
+    });
+
+}
+
+
+/* ==========================================
+   SHARED SAVED BOOK API
+========================================== */
+
+window.ReadoraSavedBooks = {
+
+    getAll: async function () {
+
+        try {
+
+            await openSavedDatabase();
+
+            return await getSavedBooks();
+
+        } catch (error) {
+
+            console.error(
+                "Readora Saved Books:",
+                error
+            );
+
+            return [];
+
+        }
+
+    },
+
+
+    get: async function (id) {
+
+        const savedBooks = await this.getAll();
+
+        return savedBooks.find(
+            item => item.id === id
+        ) || null;
+
+    },
+
+
+    add: async function (bookData) {
+
+        try {
+
+            if (!savedDB) {
+                await openSavedDatabase();
+            }
+
+            await saveBookToDatabase(bookData);
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Readora Saved Books:",
+                error
+            );
+
+            return false;
+
+        }
+
+    },
+
+
+    remove: async function (id) {
+
+        try {
+
+            if (!savedDB) {
+                await openSavedDatabase();
+            }
+
+            await removeBookFromDatabase(id);
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Readora Saved Books:",
+                error
+            );
+
+            return false;
+
+        }
+
+    }
+
+};
+
+
+/* ==========================================
+   LOAD BOOK COVER
+========================================== */
+
+function loadBookCover() {
+
+    if (!bookCover) return;
+
+    bookCover.className = "book-cover";
+
+    bookCover.innerHTML = "";
+
+    if (book.cover && book.cover.trim()) {
+
+        const image = document.createElement("img");
+
+        image.src = book.cover;
+
+        image.alt = `${book.title} book cover`;
+
+        image.loading = "eager";
+
+        image.onerror = () => {
+
+            image.remove();
+
+            bookCover.classList.remove("has-cover-image");
+
+            const fallback = document.createElement("span");
+
+            fallback.textContent = "📖";
+
+            bookCover.appendChild(fallback);
+
+            console.error(
+                `Readora: Failed to load cover for ${book.title}`
+            );
+
+        };
+
+        bookCover.classList.add("has-cover-image");
+
+        bookCover.appendChild(image);
+
+    } else {
+
+        const fallback = document.createElement("span");
+
+        fallback.textContent = "📖";
+
+        bookCover.appendChild(fallback);
 
     }
 
 }
 
 
-saveBookButton.addEventListener("click", async () => {
+/* ==========================================
+   LOAD BOOK DETAILS
+========================================== */
 
-    saveBookButton.disabled = true;
+function loadBookDetails() {
+
+    if (!book) {
+
+        if (bookDetails) {
+            bookDetails.hidden = true;
+        }
+
+        const ratingSection = document.querySelector(".rating-section");
+
+        if (ratingSection) {
+            ratingSection.hidden = true;
+        }
+
+        if (bookNotFound) {
+            bookNotFound.hidden = false;
+        }
+
+        document.title = "Book Not Found | Readora";
+
+        return false;
+
+    }
+
+
+    document.title = `${book.title} | Readora`;
+
+    bookTitle.textContent = book.title;
+
+    bookAuthor.textContent = book.author;
+
+    bookCategory.textContent = book.category;
+
+    bookDescription.textContent = book.description;
+
+    breadcrumbTitle.textContent = book.title;
+
+    metaAuthor.textContent = book.author;
+
+    metaCategory.textContent = book.category;
+
+
+    loadBookCover();
+
+
+    if (readBookBtn) {
+
+        readBookBtn.href =
+            `reader.html?id=${encodeURIComponent(bookId)}`;
+
+    }
+
+
+    return true;
+
+}
+
+
+/* ==========================================
+   SAVE BUTTON STATUS
+========================================== */
+
+async function updateSaveButton() {
+
+    if (!saveBookBtn || !book) return;
 
     try {
 
-        const saved = await getSavedBook();
+        if (!savedDB) {
+            await openSavedDatabase();
+        }
 
-        if (saved) {
+        const savedBooks = await getSavedBooks();
 
-            await removeSavedBook();
+        const isSaved = savedBooks.some(
+            item => item.id === bookId
+        );
 
-            saveMessage.textContent = "Book removed from your saved list.";
+        saveBookBtn.classList.toggle("saved", isSaved);
+
+        saveBookBtn.innerHTML = isSaved
+
+            ? `
+                <i class="fa-solid fa-bookmark"></i>
+                <span>Saved to My Books</span>
+              `
+
+            : `
+                <i class="fa-regular fa-bookmark"></i>
+                <span>Save to My Books</span>
+              `;
+
+    } catch (error) {
+
+        console.error(
+            "Readora: Cannot check saved books.",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   SAVE / REMOVE BOOK
+========================================== */
+
+async function toggleSaveBook() {
+
+    if (!book || !saveBookBtn) return;
+
+    saveBookBtn.disabled = true;
+
+    try {
+
+        if (!savedDB) {
+            await openSavedDatabase();
+        }
+
+        const savedBooks = await getSavedBooks();
+
+        const existingBook = savedBooks.find(
+            item => item.id === bookId
+        );
+
+
+        if (existingBook) {
+
+            await removeBookFromDatabase(bookId);
+
+            saveMessage.textContent =
+                "Book removed from My Books.";
 
         } else {
 
-            await saveBook();
+            const bookData = {
 
-            saveMessage.textContent = "Book saved successfully.";
+                id: bookId,
+
+                title: book.title,
+
+                author: book.author,
+
+                category: book.category,
+
+                cover: book.cover || "",
+
+                description: book.description,
+
+                savedAt: new Date().toISOString()
+
+            };
+
+            await saveBookToDatabase(bookData);
+
+            saveMessage.textContent =
+                "Book saved to My Books.";
 
         }
 
@@ -675,23 +584,443 @@ saveBookButton.addEventListener("click", async () => {
 
     } catch (error) {
 
-        console.error("Saving book failed:", error);
+        console.error(
+            "Readora: Save book error.",
+            error
+        );
 
         saveMessage.textContent =
-            "Unable to save this book.";
+            "Unable to save this book. Please try again.";
 
     } finally {
 
-        saveBookButton.disabled = false;
+        saveBookBtn.disabled = false;
 
     }
+
+}
+
+
+/* ==========================================
+   STAR DISPLAY
+========================================== */
+
+function renderStars(container, rating) {
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    for (let i = 1; i <= 5; i++) {
+
+        const star = document.createElement("i");
+
+        star.className =
+            i <= Math.round(rating)
+                ? "fa-solid fa-star"
+                : "fa-regular fa-star";
+
+        container.appendChild(star);
+
+    }
+
+}
+
+
+/* ==========================================
+   LOAD FIRESTORE RATINGS
+========================================== */
+
+async function loadBookRatings() {
+
+    if (!book) return;
+
+    try {
+
+        const ratingsRef = collection(
+            db,
+            "bookRatings",
+            bookId,
+            "users"
+        );
+
+        const snapshot = await getDocs(ratingsRef);
+
+        let total = 0;
+
+        let count = 0;
+
+        snapshot.forEach((ratingDocument) => {
+
+            const data = ratingDocument.data();
+
+            const value = Number(data.rating);
+
+            if (value >= 1 && value <= 5) {
+
+                total += value;
+
+                count++;
+
+            }
+
+            if (
+                currentUser &&
+                ratingDocument.id === currentUser.uid
+            ) {
+
+                userRating = value;
+
+            }
+
+        });
+
+
+        const average = count > 0
+            ? total / count
+            : 0;
+
+
+        averageRating.textContent = average.toFixed(1);
+
+        ratingCount.textContent =
+            `(${count} ${count === 1 ? "rating" : "ratings"})`;
+
+        renderStars(averageStars, average);
+
+
+        if (currentUser && userRating > 0) {
+
+            selectedRating = userRating;
+
+            updateStarPicker();
+
+            ratingHint.textContent =
+                `Your rating: ${userRating} / 5`;
+
+            submitRatingBtn.textContent = "Update Rating";
+
+            submitRatingBtn.disabled = false;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Readora: Could not load ratings.",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   STAR PICKER
+========================================== */
+
+function updateStarPicker() {
+
+    if (!starPicker) return;
+
+    const buttons = starPicker.querySelectorAll("button");
+
+    buttons.forEach((button) => {
+
+        const value = Number(
+            button.dataset.rating
+        );
+
+        const icon = button.querySelector("i");
+
+        if (!icon) return;
+
+        icon.className =
+            value <= selectedRating
+                ? "fa-solid fa-star"
+                : "fa-regular fa-star";
+
+    });
+
+}
+
+
+if (starPicker) {
+
+    starPicker.addEventListener("click", (event) => {
+
+        const button = event.target.closest("button[data-rating]");
+
+        if (!button || !currentUser) return;
+
+        selectedRating = Number(button.dataset.rating);
+
+        ratingHint.textContent =
+            `${selectedRating} out of 5 stars`;
+
+        submitRatingBtn.disabled = false;
+
+        updateStarPicker();
+
+    });
+
+}
+
+
+/* ==========================================
+   SUBMIT RATING
+========================================== */
+
+async function submitRating() {
+
+    if (!currentUser) {
+
+        ratingFeedback.textContent =
+            "Please log in before submitting a rating.";
+
+        return;
+
+    }
+
+    if (!selectedRating || selectedRating < 1 || selectedRating > 5) {
+
+        ratingFeedback.textContent =
+            "Please select a rating first.";
+
+        return;
+
+    }
+
+    submitRatingBtn.disabled = true;
+
+    submitRatingBtn.textContent = "Submitting...";
+
+    ratingFeedback.textContent = "";
+
+
+    try {
+
+        const ratingRef = doc(
+            db,
+            "bookRatings",
+            bookId,
+            "users",
+            currentUser.uid
+        );
+
+        await setDoc(ratingRef, {
+
+            rating: selectedRating,
+
+            userId: currentUser.uid,
+
+            bookId: bookId,
+
+            bookTitle: book.title,
+
+            updatedAt: serverTimestamp()
+
+        });
+
+
+        userRating = selectedRating;
+
+        ratingFeedback.textContent =
+            "Your rating has been saved successfully.";
+
+        submitRatingBtn.textContent = "Update Rating";
+
+        await loadBookRatings();
+
+    } catch (error) {
+
+        console.error(
+            "Readora: Rating submission failed.",
+            error
+        );
+
+        ratingFeedback.textContent =
+            "Could not save your rating. Please try again.";
+
+        submitRatingBtn.textContent = "Submit Rating";
+
+    } finally {
+
+        submitRatingBtn.disabled = false;
+
+    }
+
+}
+
+
+if (submitRatingBtn) {
+
+    submitRatingBtn.addEventListener(
+        "click",
+        submitRating
+    );
+
+}
+
+
+/* ==========================================
+   AUTHENTICATION STATE
+========================================== */
+
+onAuthStateChanged(auth, async (user) => {
+
+    currentUser = user || null;
+
+    selectedRating = 0;
+
+    userRating = 0;
+
+
+    if (!currentUser) {
+
+        ratingForm.hidden = true;
+
+        ratingLoginMessage.hidden = false;
+
+        ratingLoginMessage.innerHTML = `
+            <i class="fa-solid fa-circle-info"></i>
+            <span>
+                Please log in to your account to rate this book.
+            </span>
+        `;
+
+        return;
+
+    }
+
+
+    ratingForm.hidden = false;
+
+    ratingLoginMessage.hidden = true;
+
+
+    await loadBookRatings();
 
 });
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+/* ==========================================
+   SHARE BOOK
+========================================== */
+
+if (shareBookBtn) {
+
+    shareBookBtn.addEventListener("click", async () => {
+
+        if (!book) return;
+
+        const shareData = {
+
+            title: book.title,
+
+            text: `Discover ${book.title} by ${book.author} on Readora.`,
+
+            url: window.location.href
+
+        };
+
+
+        try {
+
+            if (navigator.share) {
+
+                await navigator.share(shareData);
+
+            } else if (navigator.clipboard) {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                shareBookBtn.innerHTML = `
+                    <i class="fa-solid fa-check"></i>
+                    Copied!
+                `;
+
+                setTimeout(() => {
+
+                    shareBookBtn.innerHTML = `
+                        <i class="fa-solid fa-share-nodes"></i>
+                        Share
+                    `;
+
+                }, 2000);
+
+            } else {
+
+                ratingFeedback.textContent =
+                    "Sharing is not supported in this browser.";
+
+            }
+
+        } catch (error) {
+
+            if (error.name !== "AbortError") {
+
+                console.error(
+                    "Readora: Share failed.",
+                    error
+                );
+
+            }
+
+        }
+
+    });
+
+}
+
+
+/* ==========================================
+   EVENT LISTENERS
+========================================== */
+
+if (saveBookBtn) {
+
+    saveBookBtn.addEventListener(
+        "click",
+        toggleSaveBook
+    );
+
+}
+
+
+/* ==========================================
+   INITIALIZE PAGE
+========================================== */
+
+async function initializePage() {
+
+    try {
+
+        await openSavedDatabase();
+
+        await updateSaveButton();
+
+    } catch (error) {
+
+        console.error(
+            "Readora: Initialization error.",
+            error
+        );
+
+        if (saveMessage) {
+
+            saveMessage.textContent =
+                "Saved books are currently unavailable.";
+
+        }
+
+    }
+
+}
+
 
 if (loadBookDetails()) {
 
@@ -702,79 +1031,3 @@ if (loadBookDetails()) {
     updateSaveButton();
 
 }
-
-
-/* =========================================
-   SHARED SAVED BOOK API
-========================================= */
-
-window.ReadoraSavedBooks = {
-
-    async getAll() {
-
-        const database = await openSavedDatabase();
-
-        return new Promise((resolve, reject) => {
-
-            const transaction = database.transaction(
-                STORE_NAME,
-                "readonly"
-            );
-
-            const request = transaction
-                .objectStore(STORE_NAME)
-                .getAll();
-
-            request.onsuccess = () => resolve(request.result);
-
-            request.onerror = () => reject(request.error);
-
-        });
-
-    },
-
-    async getById(id) {
-
-        const database = await openSavedDatabase();
-
-        return new Promise((resolve, reject) => {
-
-            const transaction = database.transaction(
-                STORE_NAME,
-                "readonly"
-            );
-
-            const request = transaction
-                .objectStore(STORE_NAME)
-                .get(id);
-
-            request.onsuccess = () => resolve(request.result);
-
-            request.onerror = () => reject(request.error);
-
-        });
-
-    },
-
-    async remove(id) {
-
-        const database = await openSavedDatabase();
-
-        return new Promise((resolve, reject) => {
-
-            const transaction = database.transaction(
-                STORE_NAME,
-                "readwrite"
-            );
-
-            transaction.objectStore(STORE_NAME).delete(id);
-
-            transaction.oncomplete = () => resolve(true);
-
-            transaction.onerror = () => reject(transaction.error);
-
-        });
-
-    }
-
-};
