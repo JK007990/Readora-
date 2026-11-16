@@ -28,6 +28,10 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     min-height: 100vh;
     background: var(--background);
@@ -52,6 +56,13 @@ svg {
     stroke-linejoin: round;
 }
 
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(249, 115, 22, 0.25);
+    outline-offset: 3px;
+}
+
 
 /* =========================================
    MAIN CONTAINER
@@ -62,7 +73,6 @@ svg {
     max-width: 1150px;
     min-height: 700px;
     margin: 0 auto;
-
     padding: 38px;
 
     border-radius: 28px;
@@ -106,6 +116,7 @@ svg {
     display: grid;
     place-items: center;
 
+    color: var(--text);
     transition: 0.2s;
 }
 
@@ -132,7 +143,10 @@ svg {
 
 .profile-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(300px, 0.85fr);
+
     gap: 30px;
     align-items: start;
 }
@@ -193,6 +207,7 @@ svg {
     font-size: 21px;
     font-weight: 700;
     margin-bottom: 6px;
+    overflow-wrap: anywhere;
 }
 
 #profileEmail {
@@ -327,12 +342,11 @@ svg {
     font-size: 13px;
     font-weight: 700;
     line-height: 1.4;
-
     margin-top: 11px;
 
     display: -webkit-box;
-    line-clamp: 2;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -371,9 +385,17 @@ svg {
     color: white;
 }
 
+.read-book-btn:hover {
+    background: var(--primary-dark);
+}
+
 .remove-book-btn {
     background: #fff0ed;
     color: #e44e38;
+}
+
+.remove-book-btn:hover {
+    background: #ffe3dc;
 }
 
 .saved-empty {
@@ -416,9 +438,13 @@ svg {
     text-decoration: none;
 }
 
+.saved-empty a:hover {
+    background: var(--primary-dark);
+}
+
 
 /* =========================================
-   SETTINGS
+   ACCOUNT SETTINGS
 ========================================= */
 
 .settings-heading {
@@ -492,12 +518,14 @@ svg {
 .setting-info small {
     font-size: 11px;
     color: var(--muted);
+    line-height: 1.4;
 }
 
 .chevron {
     width: 18px;
     height: 18px;
     color: #aaa;
+    flex-shrink: 0;
 }
 
 
@@ -539,7 +567,7 @@ svg {
 
 
 /* =========================================
-   MODAL
+   MODAL OVERLAY
 ========================================= */
 
 .modal-overlay {
@@ -548,6 +576,7 @@ svg {
 
     background: rgba(25,25,25,0.45);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 
     display: none;
     justify-content: center;
@@ -580,6 +609,7 @@ svg {
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -595,6 +625,7 @@ svg {
 
 .modal-header h2 {
     font-size: 19px;
+    font-weight: 750;
 }
 
 .modal-close {
@@ -605,9 +636,23 @@ svg {
     font-size: 25px;
     color: #888;
     background: #f5f5f5;
+
+    display: grid;
+    place-items: center;
+}
+
+.modal-close:hover {
+    color: var(--primary);
+    background: var(--primary-light);
 }
 
 .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -634,31 +679,22 @@ svg {
     color: var(--text);
     font-size: 13px;
     margin-top: 8px;
+
+    transition: border-color 0.2s;
 }
 
 .modal-content input:focus {
     border-color: var(--primary);
 }
 
-.modal-content input[type="file"] {
-    padding: 10px;
-    background: #fffaf6;
-}
-
-.upload-preview {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
-
-    object-fit: cover;
-    border-radius: 50%;
-    background: var(--primary-light);
+.modal-content input::placeholder {
+    color: #b7b7b7;
 }
 
 .modal-description {
     font-size: 12px;
     color: #888;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .modal-action {
@@ -671,6 +707,12 @@ svg {
 
     font-size: 13px;
     font-weight: 650;
+
+    transition: 0.2s;
+}
+
+.modal-action:hover:not(:disabled) {
+    background: var(--primary-dark);
 }
 
 .modal-action:disabled {
@@ -678,15 +720,84 @@ svg {
     cursor: not-allowed;
 }
 
-.device-box {
-    background: #fff8f2;
+
+/* =========================================
+   MANAGE DEVICES
+========================================= */
+
+.device-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 13px;
     border-radius: 12px;
-    padding: 15px;
+
+    background: #f0fdf4;
+    color: #15803d;
 
     font-size: 12px;
-    line-height: 1.8;
+    font-weight: 650;
+}
 
+.device-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+    flex-shrink: 0;
+}
+
+.device-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+
+.device-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--border);
+
+    font-size: 12px;
+}
+
+.device-detail-row:last-child {
+    border-bottom: none;
+}
+
+.device-detail-label {
+    color: var(--muted);
+    flex-shrink: 0;
+}
+
+.device-detail-value {
+    max-width: 65%;
+    color: var(--text);
+    font-weight: 600;
+    text-align: right;
     overflow-wrap: anywhere;
+}
+
+.device-note {
+    padding: 13px;
+    border-radius: 11px;
+
+    background: #fff8f2;
+    color: #8a6549;
+
+    font-size: 11px;
+    line-height: 1.7;
 }
 
 
@@ -825,6 +936,23 @@ svg {
 
     .modal-card {
         padding: 20px;
+    }
+
+    .modal-overlay {
+        padding: 14px;
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    .device-detail-row {
+        gap: 8px;
+        padding: 12px 10px;
+    }
+
+    .device-detail-value {
+        max-width: 60%;
     }
 
 }
