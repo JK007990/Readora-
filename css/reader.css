@@ -625,3 +625,60 @@ body.dark-reading .reading-area {
         transition-duration: 0.01ms !important;
     }
 }
+
+
+/* BOOK INFORMATION */
+
+.book-info {
+    margin-bottom: 22px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.book-info[hidden] {
+    display: none !important;
+}
+
+.book-info h2 {
+    font-size: 19px;
+    color: var(--text);
+}
+
+.book-info p {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* PDF RESPONSIVE */
+
+#pdf-container {
+    width: 100%;
+    min-width: 0;
+}
+
+#pdf-canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* READER AREA */
+
+.reading-area {
+    min-width: 0;
+}
+
+@media (max-width: 480px) {
+    .book-info {
+        padding: 13px 15px;
+    }
+
+    .book-info h2 {
+        font-size: 16px;
+    }
+}
+
