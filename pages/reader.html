@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,23 +8,19 @@
     <meta name="description" content="Read books online with Readora.">
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="stylesheet" href="../css/reader.css">
 
-    <!-- PDF.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
-    <!-- EPUB.js dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.93/epub.min.js"></script>
 </head>
 
 <body>
 
-    <!-- HEADER -->
     <header class="reader-header">
-
         <a href="../index.html" class="reader-logo">
             <span class="logo-icon">
                 <i class="fa-solid fa-book-open"></i>
@@ -34,148 +29,90 @@
         </a>
 
         <div class="header-actions">
-
             <a href="books.html" class="back-link">
                 <i class="fa-solid fa-arrow-left"></i>
                 <span>Books</span>
             </a>
 
-            <button
-                type="button"
-                id="theme-toggle"
-                class="icon-button"
-                aria-label="Toggle reading theme"
-                title="Toggle reading theme">
-
+            <button type="button" id="theme-toggle"
+                class="icon-button" aria-label="Toggle reading theme">
                 <i class="fa-solid fa-moon"></i>
-
             </button>
-
         </div>
-
     </header>
 
-
-    <!-- MAIN READER -->
     <main class="reader-main">
 
-        <!-- READING PROGRESS -->
-        <section class="progress-section">
+        <section class="book-info" id="reader-book-info" hidden>
+            <h2 id="reader-book-title"></h2>
+            <p id="reader-book-author"></p>
+        </section>
 
+        <section class="progress-section">
             <div class="progress-info">
                 <span>Reading Progress</span>
                 <span id="progress-percentage">0%</span>
             </div>
 
-            <div
-                class="progress-track"
+            <div class="progress-track"
+                id="progress-track"
                 role="progressbar"
-                aria-label="Reading progress"
                 aria-valuemin="0"
                 aria-valuemax="100"
-                aria-valuenow="0"
-                id="progress-track">
-
+                aria-valuenow="0">
                 <div id="progress-bar"></div>
-
             </div>
-
         </section>
 
-
-        <!-- READING AREA -->
         <section class="reading-area">
 
-            <!-- LOADING -->
             <div id="loading-message" class="reader-message">
-
                 <i class="fa-solid fa-book-open"></i>
-
                 <p>Preparing your book...</p>
-
             </div>
 
-
-            <!-- ERROR / EMPTY NOTICE -->
             <div id="reader-notice" class="reader-message" hidden>
-
                 <i class="fa-solid fa-book"></i>
-
-                <p id="notice-text">
-                    This book file has not been added yet.
-                </p>
-
+                <p id="notice-text"></p>
             </div>
 
-
-            <!-- PDF READER -->
             <div id="pdf-container" hidden>
-
                 <canvas id="pdf-canvas"></canvas>
-
             </div>
 
-
-            <!-- EPUB READER -->
             <div id="epub-container" hidden>
-
                 <div id="epub-viewer"></div>
-
             </div>
-
 
         </section>
 
-
-        <!-- PAGE NAVIGATION -->
         <section class="bottom-controls">
 
-            <button
-                type="button"
-                id="bottom-previous"
-                class="page-button"
-                disabled>
-
+            <button type="button" id="bottom-previous"
+                class="page-button" disabled>
                 <i class="fa-solid fa-chevron-left"></i>
                 <span>Previous</span>
-
             </button>
 
+            <span id="page-indicator">0 / 0</span>
 
-            <span id="page-indicator">
-                0 / 0
-            </span>
-
-
-            <button
-                type="button"
-                id="bottom-next"
-                class="page-button next-button"
-                disabled>
-
+            <button type="button" id="bottom-next"
+                class="page-button next-button" disabled>
                 <span>Next</span>
                 <i class="fa-solid fa-chevron-right"></i>
-
             </button>
 
         </section>
 
     </main>
 
-
-    <!-- FOOTER -->
     <footer class="reader-footer">
-
         <a href="../index.html">Readora</a>
-
         <p>Discover stories. Expand your world.</p>
-
         <span>
             © <span id="current-year">2026</span> Readora Bookstore
         </span>
-
     </footer>
-
 
     <script type="module" src="../JS/reader.js"></script>
 
