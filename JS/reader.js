@@ -2,95 +2,82 @@
 "use strict";
 
 /* =========================================
-   READORA - MINIMAL BOOK READER
-   PDF.js + EPUB.js
+   READORA - PDF + EPUB READER
 ========================================= */
 
+/*
+    Book data is loaded from URL parameters.
 
-/* =========================================
-   BOOK DATABASE
+    reader.html?id=atomic-habits
 
-   fileType: "pdf" or "epub"
-   fileUrl: PDF / EPUB file URL
-========================================= */
+    Optional direct PDF:
+    reader.html?id=atomic-habits&file=PDF_URL
+*/
 
-const books = {
-
+const BOOKS = {
     "atomic-habits": {
         title: "Atomic Habits",
         author: "James Clear",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/Bookdpf/%E1%80%A1%E1%80%9E%E1%80%80%E1%80%BA_%E1%81%82%E1%81%80_%E1%80%99%E1%80%BE%E1%80%AC%E1%80%95%E1%80%BC%E1%80%B1%E1%80%AC%E1%80%84%E1%80%BA%E1%80%B8%E1%80%9C%E1%80%B2%E1%80%9B%E1%80%99%E1%80%9A%E1%80%BA%E1%80%B7_%E1%80%A1%E1%80%81%E1%80%BB%E1%80%80%E1%80%BA_%E1%81%82%E1%81%80.pdf"
     },
 
     "psychology-of-money": {
         title: "The Psychology of Money",
         author: "Morgan Housel",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "dopamine-nation": {
         title: "Dopamine Nation",
         author: "Anna Lembke",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "the-mountain-is-you": {
         title: "The Mountain Is You",
         author: "Brianna Wiest",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "think-and-grow-rich": {
         title: "Think and Grow Rich",
         author: "Napoleon Hill",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "rich-dad-poor-dad": {
         title: "Rich Dad Poor Dad",
         author: "Robert T. Kiyosaki",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "the-alchemist": {
         title: "The Alchemist",
         author: "Paulo Coelho",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     },
 
     "ikigai": {
         title: "Ikigai",
         author: "Héctor García and Francesc Miralles",
         fileType: "pdf",
-        fileUrl: "",
-        cover: ""
+        fileUrl: ""
     }
-
 };
 
 
-/* =========================================
-   HTML ELEMENTS
-========================================= */
+/* ELEMENTS */
 
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 const loadingMessage = $("loading-message");
-
 const readerNotice = $("reader-notice");
 const noticeText = $("notice-text");
 
@@ -112,22 +99,21 @@ const progressTrack = $("progress-track");
 const themeToggle = $("theme-toggle");
 
 
-/* =========================================
-   BOOK SELECTION
-========================================= */
+/* URL */
 
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
 
-const bookId = params.get("id") || "atomic-habits";
+const bookId = params.get("id") || "";
+const book = BOOKS[bookId];
 
-const book = books[bookId];
+const externalFile = params.get("file");
 
-const storageKey = `readora-progress-${bookId}`;
+const bookTitle = $("reader-book-title");
+const bookAuthor = $("reader-book-author");
+const bookInfo = $("reader-book-info");
 
 
-/* =========================================
-   READER VARIABLES
-========================================= */
+/* VARIABLES */
 
 let currentPage = 1;
 let totalPages = 0;
@@ -141,27 +127,26 @@ let epubBook = null;
 let epubRendition = null;
 
 let isRendering = false;
-
+let renderVersion = 0;
 let resizeTimer = null;
 
+const storageKey = `readora-progress-${bookId}`;
 
-/* =========================================
-   INITIAL UI
-========================================= */
 
-function showLoading(show) {
-    loadingMessage.hidden = !show;
+/* UI */
+
+function showLoading(value) {
+    loadingMessage.hidden = !value;
 }
 
-function hideAllReaderContent() {
+function hideReader() {
     pdfContainer.hidden = true;
     epubContainer.hidden = true;
 }
 
 function showNotice(message) {
     showLoading(false);
-
-    hideAllReaderContent();
+    hideReader();
 
     readerNotice.hidden = false;
     noticeText.textContent = message;
@@ -169,7 +154,7 @@ function showNotice(message) {
     totalPages = 0;
     currentPage = 0;
 
-    updatePageControls();
+    updateControls();
 }
 
 function hideNotice() {
@@ -177,27 +162,14 @@ function hideNotice() {
 }
 
 
-/* =========================================
-   READING PROGRESS
-========================================= */
+/* PROGRESS */
 
 function updateProgress() {
-
-    let percentage = 0;
-
-    if (totalPages > 0) {
-        percentage = Math.round(
-            (currentPage / totalPages) * 100
-        );
-    }
-
-    percentage = Math.max(
-        0,
-        Math.min(100, percentage)
-    );
+    const percentage = totalPages > 0
+        ? Math.round(currentPage / totalPages * 100)
+        : 0;
 
     progressBar.style.width = `${percentage}%`;
-
     progressPercentage.textContent = `${percentage}%`;
 
     progressTrack.setAttribute(
@@ -206,13 +178,39 @@ function updateProgress() {
     );
 }
 
+function loadProgress() {
+    try {
+        const saved = JSON.parse(
+            localStorage.getItem(storageKey)
+        );
 
-/* =========================================
-   PAGE CONTROLS
-========================================= */
+        if (saved && Number.isInteger(saved.page)) {
+            return saved.page;
+        }
+    } catch (error) {
+        console.warn(error);
+    }
 
-function updatePageControls() {
+    return 1;
+}
 
+function saveProgress() {
+    if (!totalPages || !currentPage) return;
+
+    try {
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+                page: currentPage,
+                updatedAt: Date.now()
+            })
+        );
+    } catch (error) {
+        console.warn(error);
+    }
+}
+
+function updateControls() {
     const hasPages = totalPages > 0;
 
     previousButton.disabled =
@@ -227,89 +225,29 @@ function updatePageControls() {
 
     updateProgress();
 
-    if (hasPages) {
-        saveProgress();
-    }
+    if (hasPages) saveProgress();
 }
 
 
-/* =========================================
-   SAVE / RESTORE PROGRESS
-========================================= */
-
-function loadProgress() {
-
-    try {
-        const saved = JSON.parse(
-            localStorage.getItem(storageKey)
-        );
-
-        if (
-            saved &&
-            Number.isInteger(saved.page) &&
-            saved.page > 0
-        ) {
-            return saved.page;
-        }
-
-    } catch (error) {
-        console.warn(
-            "Could not load reading progress:",
-            error
-        );
-    }
-
-    return 1;
-}
-
-
-function saveProgress() {
-
-    if (totalPages <= 0 || currentPage <= 0) {
-        return;
-    }
-
-    try {
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify({
-                page: currentPage,
-                updatedAt: Date.now()
-            })
-        );
-
-    } catch (error) {
-        console.warn(
-            "Could not save reading progress:",
-            error
-        );
-    }
-}
-
-
-/* =========================================
-   PDF READER
-========================================= */
+/* PDF */
 
 async function loadPDF(url) {
-
     if (!window.pdfjsLib) {
-        throw new Error(
-            "PDF.js library could not be loaded."
-        );
+        throw new Error("PDF.js library not loaded.");
     }
 
     pdfjsLib.GlobalWorkerOptions.workerSrc =
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
     pdfDocument = await pdfjsLib.getDocument({
-        url: url
+        url: url,
+        withCredentials: false
     }).promise;
 
     totalPages = pdfDocument.numPages;
 
     if (!totalPages) {
-        throw new Error("This PDF has no pages.");
+        throw new Error("PDF has no pages.");
     }
 
     currentFormat = "pdf";
@@ -319,35 +257,36 @@ async function loadPDF(url) {
         totalPages
     );
 
-    hideNotice();
-
     pdfContainer.hidden = false;
+    hideNotice();
 
     await renderPDFPage(currentPage);
 }
 
 
 async function renderPDFPage(pageNumber) {
-
-    if (!pdfDocument || isRendering) {
-        return;
-    }
+    if (!pdfDocument) return;
 
     if (
         pageNumber < 1 ||
         pageNumber > totalPages
-    ) {
-        return;
+    ) return;
+
+    const version = ++renderVersion;
+
+    if (pdfRenderTask) {
+        try {
+            pdfRenderTask.cancel();
+        } catch (error) {}
     }
 
     isRendering = true;
-
     showLoading(true);
-    hideNotice();
 
     try {
-
         const page = await pdfDocument.getPage(pageNumber);
+
+        if (version !== renderVersion) return;
 
         const originalViewport = page.getViewport({
             scale: 1
@@ -364,7 +303,7 @@ async function renderPDFPage(pageNumber) {
         );
 
         const viewport = page.getViewport({
-            scale: scale
+            scale
         });
 
         const pixelRatio = Math.min(
@@ -374,68 +313,60 @@ async function renderPDFPage(pageNumber) {
 
         const context = pdfCanvas.getContext("2d");
 
-        pdfCanvas.width =
-            Math.floor(viewport.width * pixelRatio);
+        pdfCanvas.width = Math.floor(
+            viewport.width * pixelRatio
+        );
 
-        pdfCanvas.height =
-            Math.floor(viewport.height * pixelRatio);
+        pdfCanvas.height = Math.floor(
+            viewport.height * pixelRatio
+        );
 
-        pdfCanvas.style.width =
-            `${Math.floor(viewport.width)}px`;
-
-        pdfCanvas.style.height =
-            `${Math.floor(viewport.height)}px`;
+        pdfCanvas.style.width = `${viewport.width}px`;
+        pdfCanvas.style.height = `${viewport.height}px`;
 
         context.setTransform(
-            pixelRatio,
-            0,
-            0,
-            pixelRatio,
-            0,
-            0
+            pixelRatio, 0, 0,
+            pixelRatio, 0, 0
         );
 
         pdfRenderTask = page.render({
             canvasContext: context,
-            viewport: viewport
+            viewport
         });
 
         await pdfRenderTask.promise;
 
-        currentPage = pageNumber;
+        if (version !== renderVersion) return;
 
-        updatePageControls();
+        currentPage = pageNumber;
+        updateControls();
 
     } catch (error) {
+        if (
+            error.name !== "RenderingCancelledException" &&
+            version === renderVersion
+        ) {
+            console.error(error);
 
-        console.error("PDF rendering error:", error);
-
-        if (error.name !== "RenderingCancelledException") {
             showNotice(
-                "Unable to display this PDF page. Please check the PDF file."
+                "Unable to display this PDF page. Please check the PDF URL and CORS settings."
             );
         }
-
     } finally {
-
-        isRendering = false;
-        pdfRenderTask = null;
-
-        showLoading(false);
+        if (version === renderVersion) {
+            isRendering = false;
+            pdfRenderTask = null;
+            showLoading(false);
+        }
     }
 }
 
 
-/* =========================================
-   EPUB READER
-========================================= */
+/* EPUB */
 
 async function loadEPUB(url) {
-
     if (typeof window.ePub !== "function") {
-        throw new Error(
-            "EPUB.js library could not be loaded."
-        );
+        throw new Error("EPUB.js library not loaded.");
     }
 
     epubBook = window.ePub(url);
@@ -453,14 +384,12 @@ async function loadEPUB(url) {
     );
 
     await epubBook.ready;
-
     await epubBook.locations.generate(1000);
 
-    totalPages = epubBook.locations.total;
-
-    if (!totalPages || totalPages < 1) {
-        totalPages = 1;
-    }
+    totalPages = Math.max(
+        1,
+        epubBook.locations.total || 1
+    );
 
     currentFormat = "epub";
 
@@ -473,11 +402,10 @@ async function loadEPUB(url) {
         ? (savedPage - 1) / (totalPages - 1)
         : 0;
 
-    const savedLocation =
+    const location =
         epubBook.locations.cfiFromPercentage(percentage);
 
-    epubRendition.on("relocated", (location) => {
-
+    epubRendition.on("relocated", location => {
         const position =
             location.start.percentage || 0;
 
@@ -490,157 +418,84 @@ async function loadEPUB(url) {
         );
 
         showLoading(false);
-
-        updatePageControls();
+        updateControls();
     });
 
-    await epubRendition.display(savedLocation);
-
-    showLoading(false);
+    await epubRendition.display(location);
 }
 
 
-/* =========================================
-   PAGE NAVIGATION
-========================================= */
+/* NAVIGATION */
 
 async function nextPage() {
-
-    if (currentPage >= totalPages) {
-        return;
-    }
+    if (currentPage >= totalPages) return;
 
     if (currentFormat === "pdf") {
         await renderPDFPage(currentPage + 1);
-        return;
-    }
-
-    if (currentFormat === "epub" && epubRendition) {
+    } else if (currentFormat === "epub") {
         await epubRendition.next();
     }
 }
 
-
 async function previousPage() {
-
-    if (currentPage <= 1) {
-        return;
-    }
+    if (currentPage <= 1) return;
 
     if (currentFormat === "pdf") {
         await renderPDFPage(currentPage - 1);
-        return;
-    }
-
-    if (currentFormat === "epub" && epubRendition) {
+    } else if (currentFormat === "epub") {
         await epubRendition.prev();
     }
 }
 
-
-/* =========================================
-   BUTTON EVENTS
-========================================= */
-
-previousButton.addEventListener(
-    "click",
-    previousPage
-);
-
-nextButton.addEventListener(
-    "click",
-    nextPage
-);
+previousButton.addEventListener("click", previousPage);
+nextButton.addEventListener("click", nextPage);
 
 
-/* =========================================
-   KEYBOARD NAVIGATION
-========================================= */
+/* KEYBOARD */
 
-document.addEventListener("keydown", (event) => {
-
+document.addEventListener("keydown", event => {
     if (
         event.target instanceof HTMLInputElement ||
         event.target instanceof HTMLTextAreaElement ||
         event.target.isContentEditable
-    ) {
-        return;
-    }
+    ) return;
 
-    if (event.key === "ArrowRight") {
-        nextPage();
-    }
-
-    if (event.key === "ArrowLeft") {
-        previousPage();
-    }
-
+    if (event.key === "ArrowRight") nextPage();
+    if (event.key === "ArrowLeft") previousPage();
 });
 
 
-/* =========================================
-   MOBILE SWIPE
-========================================= */
+/* SWIPE */
 
-const readingArea = document.querySelector(
-    ".reading-area"
-);
+const readingArea = document.querySelector(".reading-area");
 
 let touchStartX = 0;
 let touchStartY = 0;
 
-readingArea.addEventListener(
-    "touchstart",
-    (event) => {
+readingArea.addEventListener("touchstart", event => {
+    touchStartX = event.changedTouches[0].screenX;
+    touchStartY = event.changedTouches[0].screenY;
+}, { passive: true });
 
-        touchStartX = event.changedTouches[0].screenX;
-        touchStartY = event.changedTouches[0].screenY;
+readingArea.addEventListener("touchend", event => {
+    const dx = event.changedTouches[0].screenX - touchStartX;
+    const dy = event.changedTouches[0].screenY - touchStartY;
 
-    },
-    { passive: true }
-);
+    if (
+        Math.abs(dx) < 60 ||
+        Math.abs(dx) < Math.abs(dy)
+    ) return;
 
-
-readingArea.addEventListener(
-    "touchend",
-    (event) => {
-
-        const endX = event.changedTouches[0].screenX;
-        const endY = event.changedTouches[0].screenY;
-
-        const differenceX = endX - touchStartX;
-        const differenceY = endY - touchStartY;
-
-        if (Math.abs(differenceX) < 60) {
-            return;
-        }
-
-        if (
-            Math.abs(differenceX) <
-            Math.abs(differenceY)
-        ) {
-            return;
-        }
-
-        if (differenceX < 0) {
-            nextPage();
-        } else {
-            previousPage();
-        }
-
-    },
-    { passive: true }
-);
+    if (dx < 0) nextPage();
+    else previousPage();
+}, { passive: true });
 
 
-/* =========================================
-   DARK / LIGHT THEME
-========================================= */
+/* THEME */
 
 const themeKey = "readora-reading-theme";
 
 function applyTheme(isDark) {
-
     document.body.classList.toggle(
         "dark-reading",
         isDark
@@ -656,9 +511,7 @@ function applyTheme(isDark) {
 
     themeToggle.setAttribute(
         "aria-label",
-        isDark
-            ? "Switch to light theme"
-            : "Switch to dark theme"
+        isDark ? "Switch to light theme" : "Switch to dark theme"
     );
 
     try {
@@ -667,120 +520,90 @@ function applyTheme(isDark) {
             isDark ? "dark" : "light"
         );
     } catch (error) {
-        console.warn("Could not save theme:", error);
+        console.warn(error);
     }
 }
-
 
 let darkMode = false;
 
 try {
-    darkMode =
-        localStorage.getItem(themeKey) === "dark";
-} catch (error) {
-    console.warn("Could not load theme:", error);
-}
+    darkMode = localStorage.getItem(themeKey) === "dark";
+} catch (error) {}
 
 applyTheme(darkMode);
 
-
 themeToggle.addEventListener("click", () => {
-
-    darkMode =
-        !document.body.classList.contains("dark-reading");
-
+    darkMode = !document.body.classList.contains("dark-reading");
     applyTheme(darkMode);
-
 });
 
 
-/* =========================================
-   PDF RESIZE
-========================================= */
+/* RESIZE */
 
 window.addEventListener("resize", () => {
+    if (currentFormat !== "pdf" || !pdfDocument) return;
 
-    if (currentFormat !== "pdf" || !pdfDocument) {
-        return;
-    }
-
-    if (resizeTimer) {
-        clearTimeout(resizeTimer);
-    }
+    clearTimeout(resizeTimer);
 
     resizeTimer = setTimeout(() => {
-
         renderPDFPage(currentPage);
-
-    }, 250);
-
+    }, 300);
 });
 
 
-/* =========================================
-   INITIALIZE READER
-========================================= */
+/* INITIALIZE */
 
 async function initializeReader() {
+    $("current-year").textContent = new Date().getFullYear();
 
-    $("current-year").textContent =
-        new Date().getFullYear();
-
-    if (!book) {
-
+    if (!book && !externalFile) {
         showNotice(
             "This book could not be found. Please return to the books page."
         );
-
         return;
     }
 
-    if (!book.fileUrl) {
+    const selectedBook = book || {
+        title: "Online Book",
+        author: "",
+        fileType: "pdf",
+        fileUrl: externalFile
+    };
 
+    const fileUrl = externalFile || selectedBook.fileUrl;
+
+    if (!fileUrl) {
         showNotice(
             "This book file has not been added yet."
         );
-
         return;
     }
+
+    bookTitle.textContent = selectedBook.title || "Untitled Book";
+    bookAuthor.textContent = selectedBook.author || "";
+    bookInfo.hidden = false;
 
     showLoading(true);
 
     try {
-
-        const format = book.fileType.toLowerCase();
+        const format = (
+            selectedBook.fileType || "pdf"
+        ).toLowerCase();
 
         if (format === "pdf") {
-
-            await loadPDF(book.fileUrl);
-
+            await loadPDF(fileUrl);
         } else if (format === "epub") {
-
-            await loadEPUB(book.fileUrl);
-
+            await loadEPUB(fileUrl);
         } else {
-
-            throw new Error(
-                "Unsupported book format. Use PDF or EPUB."
-            );
-
+            throw new Error("Unsupported book format.");
         }
-
     } catch (error) {
-
-        console.error(
-            "Reader initialization error:",
-            error
-        );
+        console.error("Reader error:", error);
 
         showNotice(
-            "Unable to open this book. Please check the file URL, file format, and file access permissions."
+            "Unable to open this book. Check the PDF URL, file access and CORS settings."
         );
-
     }
-
 }
 
-
-/* START */
 initializeReader();
