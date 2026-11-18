@@ -6,12 +6,12 @@
 
 export const books = {
 
-    "atomic-habits": {
-        title: "Atomic Habits",
-        author: "James Clear",
+    "အသက် ၂၀ မှာပြောင်းလဲရမယ့် အချက် ၂၀": {
+        title: "အသက် ၂၀ မှာပြောင်းလဲရမယ့် အချက် ၂၀",
+        author: "Monica",
         category: "Non Fiction",
-        cover: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/coverphoto/John%20Le%20Carre%20-%20Book%20Cover%20Illustrations%20by%20Matt%20Taylor.jfif",
-        description: "An easy and practical guide to building good habits, breaking bad ones, and making small changes that lead to remarkable results."
+        cover: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/coverphoto/photo_2026-11-18_22-33-42.jpg",
+        description: "အခုတွေးကြည့်ရင် ကိုယ်ဘေးနားကတစ်ယောက်ဆုံးရှုံးသွားတဲ့အခါ မပြောလိုက်ရတဲ့ စကားတွေ မလုပ်လိုက်ရတဲ့အလုပ်တွေ ပေးချင်တဲ့လက်ဆောင်တွေ အများကြီးကျန်နေခဲ့မှာနော်....။ ချစ်တဲ့သူတွေနဲ့နေရတဲ့ဘဝက အကောင်းဆုံးအခိုက်အတန့်ပဲမို့ ဒီစာကိုဖတ်မိရင် ကိုယ်ချစ်ရတဲ့သူတွေရဲ့တန်ဖိုးကို ခဏလောက်တွေးကြည့်ရအောင်...။"
     },
 
     "psychology-of-money": {
@@ -54,12 +54,12 @@ export const books = {
         description: "Introduces financial literacy and different ways of thinking about money, investing, and building wealth."
     },
 
-    "the-alchemist": {
-        title: "The Alchemist",
-        author: "Paulo Coelho",
+    "မောင့်ကိုမပြောချင်ဘူး": {
+        title: "မောင့်ကိုမပြောချင်ဘူး",
+        author: "ပုညခင်",
         category: "Normal Fiction",
-        cover: "",
-        description: "A young shepherd travels in search of treasure and discovers lessons about dreams, destiny, and following his heart."
+        cover: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/coverphoto/photo_2026-11-18_23-01-17.jpg",
+        description: "တချို့ငွေနဲ့လဲလှယ်လို့ရတဲ့ ပစ္စည်းတွေရှိတယ်။ တန်သလား? တချို့ဂုဏ်သိက္ခာနဲ့ ငွေကြေးနဲ့ လဲလှယ်လိုက်တာတွေရှိတယ်။ တန်သလား? တချို့ကိုယ့်မာနနဲ့ ချစ်ရတဲ့သူကို ဆုံးရှုံးလိုက်ရတာတွေရှိတယ်။ တန်သလား? တန်ပါသလား? တချို့ကိစ္စတွေမှာ အနောက်ပြန်လှည့်ကြည့်လိုက်ရင် တကယ်တန်ရဲ့လားလို့ ပြန်မေးဖူးလား။"
     },
 
     "ikigai": {
