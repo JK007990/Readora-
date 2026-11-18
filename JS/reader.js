@@ -57,11 +57,11 @@ const BOOKS = {
         fileUrl: ""
     },
 
-    "the-alchemist": {
-        title: "The Alchemist",
-        author: "Paulo Coelho",
-        fileType: "pdf",
-        fileUrl: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/Bookdpf/%E1%80%99%E1%80%B1%E1%80%AC%E1%80%84%E1%80%BA%E1%80%B7%E1%80%80%E1%80%AD%E1%80%AF%E1%80%95%E1%80%BC%E1%80%B1%E1%80%AC%E1%80%99%E1%80%95%E1%80%BC%E1%80%81%E1%80%BB%E1%80%84%E1%80%BA%E1%80%98%E1%80%B0%E1%80%B8_%E1%80%95%E1%80%AF%E1%80%8A%E1%80%81%E1%80%84%E1%80%BA.pdf"
+    "မောင့်ကိုမပြောချင်ဘူး": {
+     title: "မောင့်ကိုမပြောချင်ဘူး",
+     author: "ပုညခင်",
+     fileType: "pdf",
+     fileUrl: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/Bookdpf/%E1%80%99%E1%80%B1%E1%80%AC%E1%80%84%E1%80%BA%E1%80%B7%E1%80%80%E1%80%AD%E1%80%AF%E1%80%95%E1%80%BC%E1%80%B1%E1%80%AC%E1%80%99%E1%80%95%E1%80%BC%E1%80%81%E1%80%BB%E1%80%84%E1%80%BA%E1%80%98%E1%80%B0%E1%80%B8_%E1%80%95%E1%80%AF%E1%80%8A%E1%80%81%E1%80%84%E1%80%BA.pdf"
     },
 
     "ikigai": {
