@@ -15,9 +15,9 @@
 */
 
 const BOOKS = {
-    "atomic-habits": {
-        title: "Atomic Habits",
-        author: "James Clear",
+    "အသက် ၂၀ မှာပြောင်းလဲရမယ့် အချက် ၂၀": {
+        title: "အသက် ၂၀ မှာပြောင်းလဲရမယ့် အချက် ၂၀",
+        author: "Monica",
         fileType: "pdf",
         fileUrl: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/Bookdpf/%E1%80%A1%E1%80%9E%E1%80%80%E1%80%BA_%E1%81%82%E1%81%80_%E1%80%99%E1%80%BE%E1%80%AC%E1%80%95%E1%80%BC%E1%80%B1%E1%80%AC%E1%80%84%E1%80%BA%E1%80%B8%E1%80%9C%E1%80%B2%E1%80%9B%E1%80%99%E1%80%9A%E1%80%BA%E1%80%B7_%E1%80%A1%E1%80%81%E1%80%BB%E1%80%80%E1%80%BA_%E1%81%82%E1%81%80.pdf"
     },
@@ -61,7 +61,7 @@ const BOOKS = {
         title: "The Alchemist",
         author: "Paulo Coelho",
         fileType: "pdf",
-        fileUrl: ""
+        fileUrl: "https://pub-a7a0dc4aff994c599af04d73bafcff56.r2.dev/Bookdpf/%E1%80%99%E1%80%B1%E1%80%AC%E1%80%84%E1%80%BA%E1%80%B7%E1%80%80%E1%80%AD%E1%80%AF%E1%80%95%E1%80%BC%E1%80%B1%E1%80%AC%E1%80%99%E1%80%95%E1%80%BC%E1%80%81%E1%80%BB%E1%80%84%E1%80%BA%E1%80%98%E1%80%B0%E1%80%B8_%E1%80%95%E1%80%AF%E1%80%8A%E1%80%81%E1%80%84%E1%80%BA.pdf"
     },
 
     "ikigai": {
